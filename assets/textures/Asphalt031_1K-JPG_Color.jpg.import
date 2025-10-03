@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b2qrlag1gd4xb"
-path.s3tc="res://.godot/imported/opportunity_tex_suspension_n.png-d65bac0d61262df14517a0405b1819c5.s3tc.ctex"
+uid="uid://ennnstbayqkv"
+path.s3tc="res://.godot/imported/Asphalt031_1K-JPG_Color.jpg-4d7e3665b4ea6ff340d7c08feaf1a4c6.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "59f2da5910612d361f692acd5c39b01c"
-}
 
 [deps]
 
-source_file="res://assets/opportunity_tex_suspension_n.png"
-dest_files=["res://.godot/imported/opportunity_tex_suspension_n.png-d65bac0d61262df14517a0405b1819c5.s3tc.ctex"]
+source_file="res://assets/textures/Asphalt031_1K-JPG_Color.jpg"
+dest_files=["res://.godot/imported/Asphalt031_1K-JPG_Color.jpg-4d7e3665b4ea6ff340d7c08feaf1a4c6.s3tc.ctex"]
 
 [params]
 
@@ -25,12 +22,12 @@ compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=1
+compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
-roughness/mode=1
-roughness/src_normal="res://opportunity_tex_suspension_n.png"
+roughness/mode=0
+roughness/src_normal=""
 process/channel_remap/red=0
 process/channel_remap/green=1
 process/channel_remap/blue=2

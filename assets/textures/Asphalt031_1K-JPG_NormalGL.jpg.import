@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cpld7xsm64gws"
-path.s3tc="res://.godot/imported/opportunity_foil_n.png-61bba4d47c9a6260020e7afa62bc7edd.s3tc.ctex"
+uid="uid://c8uiwxxxk2vgq"
+path.s3tc="res://.godot/imported/Asphalt031_1K-JPG_NormalGL.jpg-133afdaa37a988eefd9dcc59e6a522a2.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "651a738c23ca9080e7e47bd0a853e210"
-}
 
 [deps]
 
-source_file="res://assets/opportunity_foil_n.png"
-dest_files=["res://.godot/imported/opportunity_foil_n.png-61bba4d47c9a6260020e7afa62bc7edd.s3tc.ctex"]
+source_file="res://assets/textures/Asphalt031_1K-JPG_NormalGL.jpg"
+dest_files=["res://.godot/imported/Asphalt031_1K-JPG_NormalGL.jpg-133afdaa37a988eefd9dcc59e6a522a2.s3tc.ctex"]
 
 [params]
 
@@ -30,7 +27,7 @@ compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=1
-roughness/src_normal="res://opportunity_foil_n.png"
+roughness/src_normal="res://Asphalt031_1K-JPG_NormalGL.jpg"
 process/channel_remap/red=0
 process/channel_remap/green=1
 process/channel_remap/blue=2

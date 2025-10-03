@@ -1,18 +1,19 @@
-[gd_scene load_steps=42 format=4 uid="uid://c0sbii2fjyrh0"]
+[gd_scene load_steps=48 format=4 uid="uid://c0sbii2fjyrh0"]
 
 [ext_resource type="Script" uid="uid://ci8d8qxauq3vy" path="res://rover.gd" id="1_8jvta"]
-[ext_resource type="Texture2D" uid="uid://daie58wqqns8q" path="res://assets/opportunity_tex_panels.png" id="2_gv51e"]
-[ext_resource type="Texture2D" uid="uid://cilmfc8xwakev" path="res://assets/opportunity_tex_panels_n.png" id="3_l463g"]
-[ext_resource type="Texture2D" uid="uid://ekjljf1nebod" path="res://assets/opportunity_tex_panels2.png" id="4_cxlii"]
-[ext_resource type="Texture2D" uid="uid://cc7tw58y1itwc" path="res://assets/opportunity_tex_panels2_n.png" id="5_ny56w"]
-[ext_resource type="Texture2D" uid="uid://dth6sjhmcn0nx" path="res://assets/opportunity_tex_instruments.png" id="6_wlcnu"]
-[ext_resource type="Texture2D" uid="uid://cpb35nvtrvxj6" path="res://assets/opportunity_tex_body.png" id="7_wqd5p"]
-[ext_resource type="Texture2D" uid="uid://ihquhcpguhk2" path="res://assets/opportunity_tex_body_n.png" id="8_8bigk"]
-[ext_resource type="Texture2D" uid="uid://crk741cd4qf85" path="res://assets/opportunity_tex_suspension.png" id="9_xq0eq"]
-[ext_resource type="Texture2D" uid="uid://b2qrlag1gd4xb" path="res://assets/opportunity_tex_suspension_n.png" id="10_mmdtv"]
-[ext_resource type="Texture2D" uid="uid://6cceb8w5saqv" path="res://assets/opportunity_tex_mast.png" id="11_pqbgr"]
-[ext_resource type="Texture2D" uid="uid://cpld7xsm64gws" path="res://assets/opportunity_foil_n.png" id="12_21hbo"]
-[ext_resource type="Texture2D" uid="uid://dihkbcenmxgec" path="res://assets/opportunity_tex_arm.png" id="13_65b7j"]
+[ext_resource type="Texture2D" uid="uid://daie58wqqns8q" path="res://assets/textures/opportunity_tex_panels.png" id="2_gv51e"]
+[ext_resource type="Texture2D" uid="uid://cilmfc8xwakev" path="res://assets/textures/opportunity_tex_panels_n.png" id="3_l463g"]
+[ext_resource type="Texture2D" uid="uid://ekjljf1nebod" path="res://assets/textures/opportunity_tex_panels2.png" id="4_cxlii"]
+[ext_resource type="Texture2D" uid="uid://cc7tw58y1itwc" path="res://assets/textures/opportunity_tex_panels2_n.png" id="5_ny56w"]
+[ext_resource type="Texture2D" uid="uid://dth6sjhmcn0nx" path="res://assets/textures/opportunity_tex_instruments.png" id="6_wlcnu"]
+[ext_resource type="Texture2D" uid="uid://cpb35nvtrvxj6" path="res://assets/textures/opportunity_tex_body.png" id="7_wqd5p"]
+[ext_resource type="Texture2D" uid="uid://ihquhcpguhk2" path="res://assets/textures/opportunity_tex_body_n.png" id="8_8bigk"]
+[ext_resource type="Texture2D" uid="uid://crk741cd4qf85" path="res://assets/textures/opportunity_tex_suspension.png" id="9_xq0eq"]
+[ext_resource type="Texture2D" uid="uid://b2qrlag1gd4xb" path="res://assets/textures/opportunity_tex_suspension_n.png" id="10_mmdtv"]
+[ext_resource type="Texture2D" uid="uid://6cceb8w5saqv" path="res://assets/textures/opportunity_tex_mast.png" id="11_pqbgr"]
+[ext_resource type="Texture2D" uid="uid://cpld7xsm64gws" path="res://assets/textures/opportunity_foil_n.png" id="12_21hbo"]
+[ext_resource type="Texture2D" uid="uid://dihkbcenmxgec" path="res://assets/textures/opportunity_tex_arm.png" id="13_65b7j"]
+[ext_resource type="Script" uid="uid://dmtmj7353jm2l" path="res://laser.gd" id="14_gv51e"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jha0i"]
 size = Vector3(1, 0.44030762, 0.8826904)
@@ -21,7 +22,7 @@ size = Vector3(1, 0.44030762, 0.8826904)
 resource_name = "tex_panels_n.002"
 albedo_texture = ExtResource("2_gv51e")
 metallic = 1.0
-roughness = 0.1
+roughness = 0.5
 normal_enabled = true
 normal_scale = 0.5
 normal_texture = ExtResource("3_l463g")
@@ -394,6 +395,92 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ulylw")
 
+[sub_resource type="BoxMesh" id="BoxMesh_gv51e"]
+size = Vector3(0.01, 0.01, 0.01)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l463g"]
+transparency = 1
+albedo_color = Color(1, 0.5137255, 0.5137255, 0.88235295)
+emission_enabled = true
+emission = Color(1, 0.5137255, 0.5137255, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="Animation" id="Animation_l463g"]
+resource_name = "fire"
+length = 0.101
+step = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node3D/MeshInstance3D:surface_material_override/0:albedo_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.101),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 0.5137255, 0.5137255, 0.88235295), Color(0.9999961, 0.40641424, 0.42432085, 0.5882353), Color(1, 0.40784314, 0.42352942, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Node3D/MeshInstance3D:surface_material_override/0:emission_energy_multiplier")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [16.0, 8.0]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.101),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"resetrot"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_cxlii"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node3D/MeshInstance3D:surface_material_override/0:albedo_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0.5137255, 0.5137255, 0.88235295)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Node3D/MeshInstance3D:surface_material_override/0:emission_energy_multiplier")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [16.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ny56w"]
+_data = {
+&"RESET": SubResource("Animation_cxlii"),
+&"fire": SubResource("Animation_l463g")
+}
+
 [sub_resource type="ArrayMesh" id="ArrayMesh_qnrtd"]
 _surfaces = [{
 "aabb": AABB(-0.07138324, -0.13126312, -0.13100734, 0.1600008, 0.26153958, 0.26153967),
@@ -599,7 +686,10 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_b8yv1")
 
 [node name="VehicleBody3D" type="VehicleBody3D"]
+collision_mask = 3
 mass = 100.0
+linear_damp = 0.5
+angular_damp = 0.1
 script = ExtResource("1_8jvta")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -609,6 +699,7 @@ shape = SubResource("BoxShape3D_jha0i")
 [node name="body" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_6g01p")
 skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_wnq0n")
 
 [node name="turrettraverse" type="MeshInstance3D" parent="body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.023839258, 1.3097885, -0.3738172)
@@ -620,12 +711,44 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.06565212, 0.07582188, 0)
 mesh = SubResource("ArrayMesh_chx6u")
 skeleton = NodePath("")
 
+[node name="laser" type="RayCast3D" parent="body/turrettraverse/lasermod"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.055251323, 0.15721667, 0)
+target_position = Vector3(0, 0, -100)
+collision_mask = 4
+script = ExtResource("14_gv51e")
+
+[node name="Node3D" type="Node3D" parent="body/turrettraverse/lasermod/laser"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="body/turrettraverse/lasermod/laser/Node3D"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("BoxMesh_gv51e")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_l463g")
+
+[node name="cooldown" type="Timer" parent="body/turrettraverse/lasermod/laser"]
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="body/turrettraverse/lasermod/laser"]
+libraries = {
+&"": SubResource("AnimationLibrary_ny56w")
+}
+
+[node name="acquiretime" type="Timer" parent="body/turrettraverse/lasermod/laser"]
+one_shot = true
+
+[node name="losetime" type="Timer" parent="body/turrettraverse/lasermod/laser"]
+one_shot = true
+
+[node name="playerdetect" type="RayCast3D" parent="body/turrettraverse/lasermod/laser"]
+target_position = Vector3(0, 0, -100)
+collision_mask = 7
+
 [node name="VehicleWheel3D" type="VehicleWheel3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5390966, 0.12872283, 0.6058501)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5390966, 0.229, 0.6058501)
 wheel_roll_influence = 0.2
 wheel_radius = 0.142
 wheel_friction_slip = 0.7
-suspension_travel = 0.1
+suspension_travel = 0.05
 suspension_stiffness = 58.8
 damping_compression = 1.66
 damping_relaxation = 1.76
@@ -635,11 +758,11 @@ mesh = SubResource("ArrayMesh_qntyn")
 skeleton = NodePath("")
 
 [node name="VehicleWheel3D2" type="VehicleWheel3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.54506266, 0.1277642, 0.6057325)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.54506266, 0.229, 0.6057325)
 wheel_roll_influence = 0.2
 wheel_radius = 0.142
 wheel_friction_slip = 0.7
-suspension_travel = 0.1
+suspension_travel = 0.05
 suspension_stiffness = 58.8
 damping_compression = 1.66
 damping_relaxation = 1.76
@@ -649,11 +772,11 @@ mesh = SubResource("ArrayMesh_vwbmw")
 skeleton = NodePath("")
 
 [node name="VehicleWheel3D3" type="VehicleWheel3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5825113, 0.12876369, -0.6055244)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5825113, 0.229, -0.6055244)
 wheel_roll_influence = 0.2
 wheel_radius = 0.142
-wheel_friction_slip = 0.5
-suspension_travel = 0.1
+wheel_friction_slip = 0.6
+suspension_travel = 0.05
 suspension_stiffness = 58.8
 damping_compression = 1.66
 damping_relaxation = 1.76
@@ -663,11 +786,11 @@ mesh = SubResource("ArrayMesh_ddkgx")
 skeleton = NodePath("")
 
 [node name="VehicleWheel3D4" type="VehicleWheel3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.58253515, 0.12879744, -0.60553956)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.58253515, 0.229, -0.60553956)
 wheel_roll_influence = 0.2
 wheel_radius = 0.142
-wheel_friction_slip = 0.5
-suspension_travel = 0.1
+wheel_friction_slip = 0.6
+suspension_travel = 0.05
 suspension_stiffness = 58.8
 damping_compression = 1.66
 damping_relaxation = 1.76
@@ -677,11 +800,11 @@ mesh = SubResource("ArrayMesh_cyfxe")
 skeleton = NodePath("")
 
 [node name="VehicleWheel3D5" type="VehicleWheel3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.52616763, 0.12729485, 0.10607472)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.52616763, 0.229, 0.10607472)
 wheel_roll_influence = 0.2
 wheel_radius = 0.142
 wheel_friction_slip = 0.7
-suspension_travel = 0.1
+suspension_travel = 0.05
 suspension_stiffness = 58.8
 damping_compression = 1.66
 damping_relaxation = 1.76
@@ -691,11 +814,11 @@ mesh = SubResource("ArrayMesh_tl0h8")
 skeleton = NodePath("")
 
 [node name="VehicleWheel3D6" type="VehicleWheel3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.52616805, 0.12729475, 0.10607211)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.52616805, 0.229, 0.10607211)
 wheel_roll_influence = 0.2
 wheel_radius = 0.142
 wheel_friction_slip = 0.7
-suspension_travel = 0.1
+suspension_travel = 0.05
 suspension_stiffness = 58.8
 damping_compression = 1.66
 damping_relaxation = 1.76
@@ -703,3 +826,8 @@ damping_relaxation = 1.76
 [node name="middlerightwheel" type="MeshInstance3D" parent="VehicleWheel3D6"]
 mesh = SubResource("ArrayMesh_dobgo")
 skeleton = NodePath("")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[connection signal="timeout" from="body/turrettraverse/lasermod/laser/acquiretime" to="body/turrettraverse/lasermod/laser" method="_on_acquiretime_timeout"]
+[connection signal="timeout" from="body/turrettraverse/lasermod/laser/losetime" to="body/turrettraverse/lasermod/laser" method="_on_losetime_timeout"]

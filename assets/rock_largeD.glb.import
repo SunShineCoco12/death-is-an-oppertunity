@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://oougbmfp5auc"
-path="res://.godot/imported/opportunity.glb-45b6354f6d11e2d12e7e456101d3311d.scn"
+uid="uid://sx72okjnl4x"
+path="res://.godot/imported/rock_largeD.glb-90e975dde597e19cac1526b215883c09.scn"
 
 [deps]
 
-source_file="res://opportunity.glb"
-dest_files=["res://.godot/imported/opportunity.glb-45b6354f6d11e2d12e7e456101d3311d.scn"]
+source_file="res://assets/rock_largeD.glb"
+dest_files=["res://.godot/imported/rock_largeD.glb-90e975dde597e19cac1526b215883c09.scn"]
 
 [params]
 
