@@ -15,6 +15,16 @@ run/main_scene="uid://dhjsxvxyodkcf"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[display]
+
+window/size/resizable=false
+
+[editor]
+
+movie_writer/video_quality=1.0
+movie_writer/ogv/encoding_speed=3
+movie_writer/movie_file="C:/Users/Matth/Documents/movie/movie.ogv"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/zylann.hterrain/plugin.cfg")
@@ -79,7 +89,13 @@ RMB={
 ]
 }
 
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+global_illumination/gi/use_half_resolution=true
+shading/overrides/force_vertex_shading=true

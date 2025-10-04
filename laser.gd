@@ -5,7 +5,7 @@ extends RayCast3D
 
 var distance: float
 var target: bool = false
-var spread = 0.075
+var spread = 0.1
 
 func _process(delta: float) -> void:
 	if not $"../../../../grace_period".is_stopped():
@@ -45,10 +45,22 @@ func fire(player):
 	$cooldown.start()
 
 func _on_acquiretime_timeout() -> void:
+	$Node3D/target.volume_db = -10.0
+	$Node3D/target.pitch_scale = 2.0
+	$Node3D/target.play()
+	await get_tree().create_timer(0.125).timeout
+	$Node3D/target.play()
+	await get_tree().create_timer(0.05).timeout
+	$Node3D/target.play()
+	await get_tree().create_timer($acquiretime.wait_time / 4).timeout
 	target = true
 
 
 func _on_losetime_timeout() -> void:
+	if target:
+		$Node3D/target.volume_db = -22.5
+		$Node3D/target.pitch_scale = 0.3
+		$Node3D/target.play()
 	target = false
 
 func resetrot():

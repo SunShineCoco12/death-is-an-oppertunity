@@ -15,6 +15,7 @@ var target_pos: Vector3
 var player_pos: Vector3
 var angle_diff: float = 0.0
 var laser_disabled: bool = false
+var silent = false
 var HP: int = 5
 var dead: bool = false
 var grace_time: float = 3.0
@@ -35,6 +36,7 @@ func _integrate_forces(state):
 func _process(delta: float) -> void:
 	if not $grace_period.is_stopped() or dead:
 		return
+
 	if linear_velocity.length() < 0.2:
 		if $reversetimer.is_stopped() and $reversetimercooldown.is_stopped():
 			$reversetimer.start()
@@ -63,7 +65,7 @@ func _process(delta: float) -> void:
 			$body/turrettraverse/lasermod.rotation = Vector3.ZERO
 	target_pos = nav_agent.get_next_path_position()
 	var power = engine_power * clampf((speed / linear_velocity.length()), 0.001, 100.0)
-	$enginewhine.volume_db = -20.0
+	$enginewhine.volume_db = -15.0
 	$enginewhine.pitch_scale = clampf((power / engine_power) * 2, 0.3, 1.75)
 	var input_vec3: Vector3 = Vector3((target_pos - global_position).x, 0.0, (target_pos - global_position).z)
 	var input_forward: Vector3 = -global_transform.basis.z
@@ -83,6 +85,7 @@ func _process(delta: float) -> void:
 		if is_instance_valid(rearwheel):
 			rearwheel.steering = -clampf(-angle_diff, deg_to_rad(-max_steer_degrees* 0.5), deg_to_rad(max_steer_degrees * 0.5))
 
+
 func clicked(cardname: String):
 	var parts = cardname.split("_")
 	var name = parts[1]
@@ -99,11 +102,10 @@ func clicked(cardname: String):
 		"grace":
 			grace_time *= 0.5
 		"silent":
-			$enginewhine.autoplay = false
-			$enginewhine.playing = false
-			$tiresrolling.autoplay = false
-			$tiresrolling.playing = false
-			$body/turrettraverse/lasermod/laser/Node3D/lasersfx.volume_db = -80.0
+			$body/turrettraverse/lasermod/laser/Node3D/lasersfx.process_mode = Node.PROCESS_MODE_DISABLED
+			$body/turrettraverse/lasermod/laser/Node3D/target.process_mode = Node.PROCESS_MODE_DISABLED
+			$enginewhine.process_mode = Node.PROCESS_MODE_DISABLED
+			$tiresrolling.process_mode = Node.PROCESS_MODE_DISABLED
 			get_tree().call_group("players", "erase", "bad_silent")
 		"steer":
 			max_steer_degrees = 45.0
@@ -135,7 +137,6 @@ func death():
 	dead = true
 	$GPUParticles3D3.amount_ratio = 1.0
 	$GPUParticles3D2.emitting = true
-	await get_tree().create_timer(3.0).timeout
 	get_tree().call_group("players", "win")
 
 func laser_hit():
@@ -161,3 +162,11 @@ func _on_reversetimer_timeout() -> void:
 	engine_power = -engine_power
 	max_steer_degrees = -max_steer_degrees
 	$reversetimercooldown.start()
+
+
+func _on_enginewhine_finished() -> void:
+	$enginewhine.play()
+
+
+func _on_tiresrolling_finished() -> void:
+	$tiresrolling.play()

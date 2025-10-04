@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bjfn2icvadtlb"
+path="res://.godot/imported/chalksnap - ivory.ogg-dac852c0486feca187b314c039f76b2d.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/audio/chalksnap - ivory.ogg"
+dest_files=["res://.godot/imported/chalksnap - ivory.ogg-dac852c0486feca187b314c039f76b2d.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

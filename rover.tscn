@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=4 uid="uid://c0sbii2fjyrh0"]
+[gd_scene load_steps=75 format=4 uid="uid://c0sbii2fjyrh0"]
 
 [ext_resource type="Script" uid="uid://ci8d8qxauq3vy" path="res://rover.gd" id="1_8jvta"]
 [ext_resource type="Texture2D" uid="uid://dsoxpi7eak84n" path="res://assets/textures/opportunity_tex_panels.png" id="2_gv51e"]
@@ -17,6 +17,8 @@
 [ext_resource type="AudioStream" uid="uid://uus2mn22rf1x" path="res://assets/audio/electric_whine.ogg" id="15_cxlii"]
 [ext_resource type="AudioStream" uid="uid://c351qkmpdx2bx" path="res://assets/audio/tires_rolling.ogg" id="15_l463g"]
 [ext_resource type="AudioStream" uid="uid://clgna2v6kp04t" path="res://assets/audio/laserShoot.wav" id="15_ny56w"]
+[ext_resource type="AudioStream" uid="uid://bq6bsln5ml3kt" path="res://assets/audio/invisrecharge.wav" id="16_wqd5p"]
+[ext_resource type="Script" uid="uid://ck2dq8q1wnqjx" path="res://gpup.gd" id="18_wlcnu"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jha0i"]
 size = Vector3(1, 0.44030762, 0.8826904)
@@ -851,6 +853,14 @@ stream = ExtResource("15_ny56w")
 pitch_scale = 1.2
 bus = &"SFX"
 
+[node name="target" type="AudioStreamPlayer3D" parent="body/turrettraverse/lasermod/laser/Node3D"]
+stream = ExtResource("16_wqd5p")
+volume_db = -10.0
+pitch_scale = 0.3
+max_distance = 30.0
+max_polyphony = 10
+bus = &"SFX"
+
 [node name="cooldown" type="Timer" parent="body/turrettraverse/lasermod/laser"]
 one_shot = true
 
@@ -1006,6 +1016,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.52616805, 0.12900001, 0.106
 shape = SubResource("ConvexPolygonShape3D_pqbgr")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.66248894, 0)
 emitting = false
 amount = 64
@@ -1013,8 +1024,10 @@ amount_ratio = 0.25
 fixed_fps = 15
 process_material = SubResource("ParticleProcessMaterial_wqd5p")
 draw_pass_1 = SubResource("SphereMesh_xq0eq")
+script = ExtResource("18_wlcnu")
 
 [node name="GPUParticles3D3" type="GPUParticles3D" parent="."]
+process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.66248894, 0)
 emitting = false
 amount = 96
@@ -1025,6 +1038,7 @@ process_material = SubResource("ParticleProcessMaterial_8bigk")
 draw_pass_1 = SubResource("SphereMesh_mmdtv")
 
 [node name="GPUParticles3D2" type="GPUParticles3D" parent="."]
+process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4877466, 0)
 emitting = false
 amount = 64
@@ -1044,4 +1058,6 @@ one_shot = true
 
 [connection signal="timeout" from="body/turrettraverse/lasermod/laser/acquiretime" to="body/turrettraverse/lasermod/laser" method="_on_acquiretime_timeout"]
 [connection signal="timeout" from="body/turrettraverse/lasermod/laser/losetime" to="body/turrettraverse/lasermod/laser" method="_on_losetime_timeout"]
+[connection signal="finished" from="enginewhine" to="." method="_on_enginewhine_finished"]
+[connection signal="finished" from="tiresrolling" to="." method="_on_tiresrolling_finished"]
 [connection signal="timeout" from="reversetimer" to="." method="_on_reversetimer_timeout"]

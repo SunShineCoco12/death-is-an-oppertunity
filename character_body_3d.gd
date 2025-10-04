@@ -5,6 +5,8 @@ extends CharacterBody3D
 @onready var raycast: RayCast3D = $Camera3D/GunHolder/gun/RayCast3D
 @onready var shieldbreak: AudioStreamPlayer = $shieldbreak
 
+@export var sfxbusaudio: float = 1.0
+
 var cards: Dictionary = {
 	"doublejump_speed" : preload("res://cards/card_doublejump_speed.tscn").instantiate(),
 	"invis_reaction" : preload("res://cards/card_invis_reaction.tscn").instantiate(),
@@ -35,6 +37,7 @@ var has_gun_card: bool = false
 var has_life_card: bool = false
 var has_life: bool = false
 var invistime: float = 0.0
+var playtime_multiplier: float = 1.0
 var gun_default_pos: Vector3 = Vector3(0.141, -0.14, -0.22)
 
 func _ready() -> void:
@@ -43,7 +46,7 @@ func _ready() -> void:
 
 func start() -> void:
 	$"lacebark pine".stop()
-	$rumble.play()
+	$rumble.call_deferred("play")
 	$survivetimer.start()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -68,6 +71,7 @@ func _input(event: InputEvent) -> void:
 		$Camera3D/GunHolder.rotation.y += event.relative.x * 0.0006
 
 func _process(delta: float) -> void:
+	AudioServer.set_bus_volume_linear(2, $MainMenu/Panel/MarginContainer/HBoxContainer/SFX.value * sfxbusaudio)
 	if get_tree().paused:
 		$UI/crosshair.hide()
 		$UI/teleportreloadUI.hide()
@@ -84,7 +88,7 @@ func _process(delta: float) -> void:
 		return
 	if HP <= 0.0 and not dead:
 		death()
-	if $Camera3D/teleportray.is_colliding():
+	if $Camera3D/teleportray.is_colliding() and has_teleport_card:
 		$UI/crosshair.modulate = Color.GREEN
 	else:
 		$UI/crosshair.modulate = Color.WHITE
@@ -93,8 +97,8 @@ func _process(delta: float) -> void:
 		$Camera3D/TargetRotation.look_at($Camera3D/gunray.get_collision_point())
 	else:
 		$Camera3D/TargetRotation.rotation = Vector3.ZERO
-	$Camera3D/GunHolder.rotation = lerp($Camera3D/GunHolder.rotation, $Camera3D/TargetRotation.rotation, delta * 5)
-	$Camera3D/GunHolder.position += velocity * 0.0005
+	$Camera3D/GunHolder.rotation = lerp($Camera3D/GunHolder.rotation, $Camera3D/TargetRotation.rotation, delta * 20)
+	$Camera3D/GunHolder.global_position += velocity * -0.0005
 	$Camera3D/GunHolder.position = lerp($Camera3D/GunHolder.position, gun_default_pos, delta * 5)
 
 	$UI/teleportreloadUI.value = $teleportcooldown.wait_time - $teleportcooldown.time_left
@@ -122,6 +126,7 @@ func _process(delta: float) -> void:
 	# shoot
 	if Input.is_action_pressed("LMB") and $shootcooldown.is_stopped() and has_gun_card:
 		$shootcooldown.start()
+		$AnimationPlayer2.play("reload")
 		$lasershoot.play()
 		var laser = preload("res://laser.tscn").instantiate()
 		laser.global_transform = $Camera3D/GunHolder.global_transform
@@ -185,7 +190,7 @@ func disp_cards():
 
 
 func disp_cards_good():
-	if run < randi_range(1, 1):
+	if run < randi_range(1 * playtime_multiplier, 1 * playtime_multiplier):
 		for i in range(3):
 			var idx = randi_range(0, cards.size() - 1)
 			$UI/HBoxContainer.add_child(cards[cards.keys()[idx]].duplicate())
@@ -237,12 +242,18 @@ func respawn():
 	set_collision_layer_value(3, true)
 	set_collision_mask_value(3, true)
 	$"peaceful residence".stop()
-	$rumble.play()
+	if has_gun_card:
+		$chalksnap.play()
+	else:
+		$rumble.play()
 	run += 1
 	if has_life_card:
 		has_life = true
 	get_tree().paused = false
-	$survivetimer.start()
+	if not has_gun_card:
+		$survivetimer.start()
+	else:
+		$UI/timeremaining.text = "-1"
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	animp.play("RESET")
 	dead = false
@@ -302,13 +313,21 @@ func erase(key: String):
 	cardsbad.erase(str(key))
 
 func win():
+	animp.stop()
+	animp.play("win")
 	$survivetimer.stop()
-	get_tree().paused = true
 	$rumble.stop()
 	$"rumcherry(reprise)".play()
-	$UI.hide()
-	$Win.show()
+	await get_tree().create_timer(7.0).timeout
+	get_tree().paused = true
 
 
 func _on_sensitvity_value_changed(value: float) -> void:
 	sensitivity = value * 0.1
+
+
+func _on_playtime_value_changed(value: float) -> void:
+	playtime_multiplier = value
+
+func _on_chalksnap_finished() -> void:
+	$chalksnap.play()
