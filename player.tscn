@@ -1,16 +1,151 @@
-[gd_scene load_steps=8 format=3 uid="uid://ccqa4pvvwnccx"]
+[gd_scene load_steps=26 format=3 uid="uid://ccqa4pvvwnccx"]
 
 [ext_resource type="Script" uid="uid://1qi1xoptnqt3" path="res://character_body_3d.gd" id="1_4flbx"]
 [ext_resource type="PackedScene" uid="uid://bp0dyg2yov4nu" path="res://assets/gun.glb" id="2_i3pqv"]
 [ext_resource type="Shader" uid="uid://cc1e2essrs5p7" path="res://player.gdshader" id="2_onrkg"]
+[ext_resource type="Texture2D" uid="uid://bhtufxfg35pfj" path="res://assets/target_b.png" id="4_b26j0"]
+[ext_resource type="AudioStream" uid="uid://4y4ofpj4rvcp" path="res://assets/audio/hitHurt.wav" id="4_hqtel"]
+[ext_resource type="AudioStream" uid="uid://dpxgvv3ourf8v" path="res://assets/audio/powerUp7.ogg" id="5_sweqy"]
+[ext_resource type="AudioStream" uid="uid://bchws8rdgtfrf" path="res://assets/audio/chargedown.ogg" id="7_n7ghd"]
+[ext_resource type="AudioStream" uid="uid://b633gkdslf2ms" path="res://assets/audio/chargeup.ogg" id="8_nvl01"]
+[ext_resource type="AudioStream" uid="uid://bq6bsln5ml3kt" path="res://assets/audio/invisrecharge.wav" id="9_ivps1"]
+[ext_resource type="AudioStream" uid="uid://dr40u72aq1bkr" path="res://assets/audio/life.wav" id="10_n7ghd"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_onrkg"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_i3pqv"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4flbx"]
-radius = 1.5
-height = 3.0
+[sub_resource type="SphereShape3D" id="SphereShape3D_b26j0"]
+radius = 1.0
+
+[sub_resource type="Animation" id="Animation_i3pqv"]
+resource_name = "death"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Vignette:material:shader_parameter/alpha")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.5, 0.7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("UI/Vignette:material:shader_parameter/color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0.09411765, 0, 0, 1)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"disp_cards"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_hqtel"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Vignette:material:shader_parameter/alpha")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("UI/Vignette:material:shader_parameter/color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_sweqy"]
+resource_name = "timeout"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Vignette:material:shader_parameter/alpha")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.5, 0.55]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("UI/Vignette:material:shader_parameter/color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0.23470661, 3.128499e-07, 1)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.6),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"disp_cards_good"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sweqy"]
+_data = {
+&"RESET": SubResource("Animation_hqtel"),
+&"death": SubResource("Animation_i3pqv"),
+&"timeout": SubResource("Animation_sweqy")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sweqy"]
+bg_color = Color(0.31061712, 0.31061712, 0.3106171, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2hs0m"]
+bg_color = Color(0.4117647, 0, 0.06666667, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_1jxqw"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_sweqy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i3pqv"]
 shader = ExtResource("2_onrkg")
@@ -19,9 +154,23 @@ shader_parameter/inner_radius = 0.0
 shader_parameter/outer_radius = 1.0
 shader_parameter/color = Color(0, 0, 0, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_i3pqv"]
+font_size = 80
+font_color = Color(1, 0, 0, 1)
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n7ghd"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nvl01"]
+bg_color = Color(1, 0, 0, 1)
+corner_radius_bottom_left = 1
+
 [node name="CharacterBody3D" type="CharacterBody3D" groups=["players"]]
-collision_layer = 7
-collision_mask = 7
+process_mode = 3
+collision_layer = 6
+collision_mask = 6
 floor_max_angle = 0.61086524
 script = ExtResource("1_4flbx")
 
@@ -35,22 +184,146 @@ shape = SubResource("CapsuleShape3D_i3pqv")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0.3, 0)
-shape = SubResource("CapsuleShape3D_4flbx")
+shape = SubResource("SphereShape3D_b26j0")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
-fov = 70.0
 
 [node name="GunHolder" type="Node3D" parent="Camera3D"]
-transform = Transform3D(0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0.14062494, -0.5209873, -0.32828474)
-visible = false
+transform = Transform3D(0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0.14062494, -0.13950652, -0.2195664)
 
 [node name="gun" parent="Camera3D/GunHolder" instance=ExtResource("2_i3pqv")]
-transform = Transform3D(-0.99999994, 0, -8.742277e-08, 0, 0.99999994, 0, 8.742277e-08, 0, -0.99999994, 0, 5.4677744, 0)
+transform = Transform3D(-0.99999994, 0, -8.742277e-08, 0, 0.99999994, 0, 8.742277e-08, 0, -0.99999994, 0, 0, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D/GunHolder/gun"]
+transform = Transform3D(1, 0, -1.4210855e-14, 0, 1, 0, 1.4210855e-14, 0, 1, 0, 0, 0)
+target_position = Vector3(0, 0, 1000)
+
+[node name="TargetRotation" type="Node3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.141, -0.14, -0.22)
+
+[node name="teleportray" type="RayCast3D" parent="Camera3D"]
+target_position = Vector3(0, 0, -20)
+
+[node name="gunray" type="RayCast3D" parent="Camera3D"]
+target_position = Vector3(0, 0, -1000)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+process_mode = 3
+libraries = {
+&"": SubResource("AnimationLibrary_sweqy")
+}
+
+[node name="MainMenu" type="Control" parent="."]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel2" type="Panel" parent="MainMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sweqy")
+
+[node name="Panel" type="Panel" parent="MainMenu"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 400.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2hs0m")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainMenu/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="HBoxContainer" type="VBoxContainer" parent="MainMenu/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="StartGame" type="Button" parent="MainMenu/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 80
+text = "Start"
+
+[node name="MasterLabel" type="Label" parent="MainMenu/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Master"
+label_settings = SubResource("LabelSettings_1jxqw")
+horizontal_alignment = 1
+
+[node name="Master" type="HSlider" parent="MainMenu/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="SFXLabel" type="Label" parent="MainMenu/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "SFX"
+label_settings = SubResource("LabelSettings_1jxqw")
+horizontal_alignment = 1
+
+[node name="SFX" type="HSlider" parent="MainMenu/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="MusicLabel" type="Label" parent="MainMenu/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Music"
+label_settings = SubResource("LabelSettings_1jxqw")
+horizontal_alignment = 1
+
+[node name="Music" type="HSlider" parent="MainMenu/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="Help" type="Button" parent="MainMenu/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "What is going on?"
+
+[node name="HelpLabel" type="Label" parent="MainMenu"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "You are trying to survive for 30 seconds while being hunted down by the Opportunity Mars rover.
+At the end of a run, you get to pick between 3 cards that decide what upgrades who gets.
+The red portion of the card is what the rover gets, the blue portion is what you get.
+Dying result in only the rover being upgraded.
+Surviving results in both you and the rover being upgraded.
+After 12-18 runs, a special upgrade becomes available that allows you to win the game."
+label_settings = SubResource("LabelSettings_sweqy")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="UI" type="Control" parent="."]
+process_mode = 3
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -66,4 +339,118 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(1, 0, 0, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -384.0
+offset_bottom = -216.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+theme_override_constants/separation = 160
+alignment = 1
+
+[node name="timeremaining" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -91.0
+offset_bottom = 110.0
+grow_horizontal = 0
+label_settings = SubResource("LabelSettings_i3pqv")
+
+[node name="crosshair" type="TextureRect" parent="UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_b26j0")
+
+[node name="teleportreloadUI" type="ProgressBar" parent="UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = 36.0
+offset_right = 70.00098
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_n7ghd")
+theme_override_styles/fill = SubResource("StyleBoxFlat_nvl01")
+max_value = 3.0
+value = 3.0
+show_percentage = false
+
+[node name="survivetimer" type="Timer" parent="."]
+process_mode = 1
+wait_time = 30.0
+one_shot = true
+
+[node name="hit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_hqtel")
+bus = &"SFX"
+
+[node name="click" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_sweqy")
+volume_db = -10.0
+pitch_scale = 0.9
+bus = &"SFX"
+
+[node name="inviscooldown" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="invistime" type="Timer" parent="."]
+one_shot = true
+
+[node name="invison" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_n7ghd")
+volume_db = 24.0
+bus = &"SFX"
+
+[node name="invisoff" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_nvl01")
+volume_db = 24.0
+bus = &"SFX"
+
+[node name="invisready" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_ivps1")
+max_polyphony = 2
+bus = &"SFX"
+
+[node name="shieldbreak" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_n7ghd")
+pitch_scale = 1.5
+
+[node name="teleportcooldown" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="button_up" from="MainMenu/Panel/MarginContainer/HBoxContainer/StartGame" to="." method="_on_start_game_button_up"]
+[connection signal="value_changed" from="MainMenu/Panel/MarginContainer/HBoxContainer/Master" to="." method="_on_master_value_changed"]
+[connection signal="value_changed" from="MainMenu/Panel/MarginContainer/HBoxContainer/SFX" to="." method="_on_sfx_value_changed"]
+[connection signal="value_changed" from="MainMenu/Panel/MarginContainer/HBoxContainer/Music" to="." method="_on_music_value_changed"]
+[connection signal="button_up" from="MainMenu/Panel/MarginContainer/HBoxContainer/Help" to="." method="_on_help_button_up"]
+[connection signal="timeout" from="survivetimer" to="." method="timeout"]
+[connection signal="timeout" from="inviscooldown" to="." method="_on_inviscooldown_timeout"]
+[connection signal="timeout" from="invistime" to="." method="_on_invistime_timeout"]

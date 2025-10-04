@@ -1,0 +1,281 @@
+[gd_scene load_steps=13 format=3 uid="uid://dk05q8hq3mr0p"]
+
+[ext_resource type="Script" uid="uid://b23ny02uvjee" path="res://card.gd" id="1_w4nuf"]
+[ext_resource type="Texture2D" uid="uid://ci5rl7ksixuvo" path="res://assets/defaultcard.png" id="2_5loe2"]
+[ext_resource type="Texture2D" uid="uid://5mwqqvtqelms" path="res://assets/arrow_right.png" id="3_oyt0x"]
+[ext_resource type="Texture2D" uid="uid://bjtxivcosx6nq" path="res://assets/cardred.png" id="4_iebgg"]
+[ext_resource type="AudioStream" uid="uid://cm17crbknktkc" path="res://assets/audio/cardSlide2.ogg" id="5_ctwyw"]
+[ext_resource type="Texture2D" uid="uid://clvngqgd1yaei" path="res://assets/cardblue.png" id="5_oyt0x"]
+[ext_resource type="Texture2D" uid="uid://6toya5e6fxc8" path="res://assets/untitled.png" id="6_iebgg"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_2x74v"]
+font_size = 80
+font_color = Color(0.7882353, 0.24705882, 0.24705882, 1)
+outline_size = 8
+outline_color = Color(0.26666668, 0.52156866, 0.7490196, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_vv0e4"]
+font_size = 80
+font_color = Color(0.26666668, 0.52156866, 0.7490196, 1)
+outline_size = 8
+outline_color = Color(0.7882353, 0.24705882, 0.24705882, 1)
+
+[sub_resource type="Animation" id="Animation_q85yi"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("card:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_5loe2")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("icon:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_oyt0x")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("drawcard:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("textplayer:text")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Double Jump"]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("textrover:text")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Double Jump"]
+}
+
+[sub_resource type="Animation" id="Animation_potoi"]
+resource_name = "turn"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("card:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [ExtResource("4_iebgg"), ExtResource("5_oyt0x"), ExtResource("5_oyt0x")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("icon:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [null, ExtResource("6_iebgg"), ExtResource("6_iebgg")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("drawcard:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-1, 1), Vector2(1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("textplayer:text")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": ["", "You: Laser gun"]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("textrover:text")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": ["", ""]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rr188"]
+_data = {
+&"RESET": SubResource("Animation_q85yi"),
+&"turn": SubResource("Animation_potoi")
+}
+
+[node name="Control" type="Control" groups=["cards"]]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_w4nuf")
+cardname = "gun_good"
+
+[node name="card" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = -95.0
+offset_right = 70.0
+offset_bottom = 95.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_5loe2")
+
+[node name="icon" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -78.0
+offset_right = 1872.0
+offset_bottom = 1002.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("3_oyt0x")
+
+[node name="textplayer" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -62.0
+offset_top = -29.0
+offset_right = 930.0
+offset_bottom = 275.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.125, 0.125)
+text = "Double Jump"
+label_settings = SubResource("LabelSettings_2x74v")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="textrover" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -62.0
+offset_top = 36.0
+offset_right = 930.0
+offset_bottom = 436.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.125, 0.125)
+text = "Double Jump"
+label_settings = SubResource("LabelSettings_vv0e4")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_rr188")
+}
+
+[node name="drawcard" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ctwyw")
+pitch_scale = 1.1
+max_polyphony = 3
+bus = &"SFX"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -70.0
+offset_top = -95.0
+offset_right = 70.0
+offset_bottom = 95.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[connection signal="button_up" from="Button" to="." method="_on_button_button_up"]

@@ -5,10 +5,11 @@ extends RayCast3D
 
 var distance: float
 var target: bool = false
-var spread = 0.15
+var spread = 0.1
 
 func _process(delta: float) -> void:
-	$cooldown
+	if not $"../../../../grace_period".is_stopped():
+		return
 	if is_colliding() and get_collider().is_in_group("players"):
 		if $cooldown.is_stopped() and target:
 			rotation = Vector3(randf_range(-spread, spread), randf_range(-spread, spread), 0.0)
@@ -29,8 +30,13 @@ func _process(delta: float) -> void:
 			$losetime.start()
 
 func fire(player):
+	$Node3D/lasersfx.play()
 	if player and "HP" in player:
-		player.HP -= 100.0
+		if not player.has_life:
+			player.HP -= 100.0
+		else:
+			player.has_life = false
+			player.shieldbreak.play()
 		print("die")
 	distance = (global_position - get_collision_point()).length()
 	mesh.mesh.size = Vector3(0.02, distance, 0.02)
