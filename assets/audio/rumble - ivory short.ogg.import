@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bxy6unk1il4y6"
+path="res://.godot/imported/rumble - ivory short.ogg-781231ad2be6fcdbe2fe1e6b5b9addec.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/audio/rumble - ivory short.ogg"
+dest_files=["res://.godot/imported/rumble - ivory short.ogg-781231ad2be6fcdbe2fe1e6b5b9addec.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

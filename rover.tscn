@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=4 uid="uid://c0sbii2fjyrh0"]
+[gd_scene load_steps=73 format=4 uid="uid://c0sbii2fjyrh0"]
 
 [ext_resource type="Script" uid="uid://ci8d8qxauq3vy" path="res://rover.gd" id="1_8jvta"]
 [ext_resource type="Texture2D" uid="uid://dsoxpi7eak84n" path="res://assets/textures/opportunity_tex_panels.png" id="2_gv51e"]
@@ -713,6 +713,97 @@ points = PackedVector3Array(0.022866536, -0.0030591935, 0.13001075, -0.028832972
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_pqbgr"]
 points = PackedVector3Array(-0.07459782, -0.003059104, 0.13001099, -0.12629734, -0.0027520359, 0.11944267, -0.12629734, -0.02939035, 0.11562988, -0.07459782, -0.032051623, 0.12583995, -0.022882633, -0.032051623, 0.12583995, -0.022882633, -0.003059104, 0.12998539, -0.022882633, 0.026112527, 0.12760562, -0.07459782, 0.026112527, 0.12760562, -0.12629734, 0.02409099, 0.11724201, -0.13116816, 0.023886263, 0.11621843, -0.13116816, -0.0027008653, 0.11839351, -0.13116816, -0.029134452, 0.11460632, -0.13116816, -0.054032706, 0.105035976, -0.12629734, -0.054518893, 0.105957195, -0.07459782, -0.059380837, 0.11532281, 0.028816894, -0.054032706, 0.105035976, 0.028816894, -0.029134452, 0.11460632, 0.028832555, -0.0027008653, 0.11839351, -0.022882633, -0.059380837, 0.11532281, 0.028816894, 0.023886263, 0.11621843, 0.028816894, 0.049347475, 0.10818344, -0.022882633, 0.054055884, 0.118777364, -0.07459782, 0.054055884, 0.118777364, -0.12629734, 0.0497569, 0.10913025, -0.13116816, 0.049347475, 0.10818344, -0.13116816, -0.07619291, 0.090168685, -0.12629734, -0.07685822, 0.09096195, -0.07459782, -0.08369053, 0.09899694, 0.028816894, -0.07619291, 0.090168685, 0.028816894, -0.094463564, 0.070720926, 0.028816894, -0.10797463, 0.04769069, 0.028816894, -0.11600963, 0.022255078, 0.028816894, -0.11818471, -0.0043320507, 0.028816894, -0.11439752, -0.030765638, 0.028816894, -0.10482717, -0.055663884, 0.028816894, -0.089959875, -0.077824086, 0.028816894, -0.070512116, -0.09609474, 0.028816894, -0.047507465, -0.10960581, 0.028816894, -0.02204626, -0.11764081, 0.028816894, 0.0045408756, -0.119815886, 0.028816894, 0.030948877, -0.11602869, 0.028816894, 0.05587271, -0.10645834, 0.028816894, 0.078007326, -0.091591045, 0.028816894, 0.09630358, -0.0721433, 0.028816894, 0.109814644, -0.04913865, 0.028816894, 0.11784965, -0.023677446, 0.028816894, 0.120024726, 0.0029096752, 0.028816894, 0.11623752, 0.029317677, 0.028816894, 0.106667176, 0.054241523, 0.028816894, 0.091799885, 0.076376125, 0.028816894, 0.072352126, 0.09467237, -0.022882633, -0.08369053, 0.09899694, -0.022882633, 0.079312384, 0.10396123, -0.07459782, 0.079312384, 0.10396123, -0.12629734, 0.07299186, 0.095516816, -0.13116816, 0.072352126, 0.09467237, -0.13116816, -0.094463564, 0.070720926, -0.12629734, -0.095308006, 0.07136066, -0.07459782, -0.10375243, 0.077681184, -0.022882633, -0.10375243, 0.077681184, -0.022882633, -0.11856855, 0.052424684, -0.022882633, -0.1273968, 0.024481341, -0.022882633, -0.1297766, -0.0046902895, -0.022882633, -0.12563115, -0.0336828, -0.022882633, -0.11511401, -0.061012015, -0.022882633, -0.09878813, -0.08532171, -0.022882633, -0.07747237, -0.105383605, -0.022882633, -0.052215874, -0.12019972, -0.022882633, -0.02429811, -0.12902798, -0.022882633, 0.0048991144, -0.13140777, -0.022882633, 0.033891633, -0.12726232, -0.022882633, 0.06122084, -0.11674518, -0.022882633, 0.08553055, -0.100419305, -0.022882633, 0.105592445, -0.079103544, -0.022882633, 0.120408565, -0.053847052, -0.022882633, 0.12923682, -0.025929295, -0.022882633, 0.1316422, 0.003267929, -0.022882633, 0.12747118, 0.032260433, -0.022882633, 0.11695403, 0.059589654, -0.022882633, 0.10062814, 0.083899334, -0.07459782, 0.10062814, 0.083899334, -0.12629734, 0.09259315, 0.07706703, -0.13116816, 0.091799885, 0.076376125, -0.13116816, -0.10797463, 0.04771629, -0.12629734, -0.10892144, 0.048125714, -0.07459782, -0.11856855, 0.052424684, -0.07459782, -0.1273968, 0.024481341, -0.07459782, -0.1297766, -0.0046902895, -0.07459782, -0.12563115, -0.0336828, -0.07459782, -0.11511401, -0.061012015, -0.07459782, -0.09878813, -0.08532171, -0.07459782, -0.07747237, -0.105383605, -0.07459782, -0.052215874, -0.12019972, -0.07459782, -0.02429811, -0.12902798, -0.07459782, 0.0048991144, -0.13140777, -0.07459782, 0.033891633, -0.12726232, -0.07459782, 0.06122084, -0.11674518, -0.07459782, 0.08553055, -0.100419305, -0.07459782, 0.105592445, -0.079103544, -0.07459782, 0.120408565, -0.053847052, -0.07459782, 0.12923682, -0.025929295, -0.07459782, 0.1316422, 0.003267929, -0.07459782, 0.12747118, 0.032260433, -0.07459782, 0.11695403, 0.059589654, -0.12629734, 0.107588395, 0.054727703, -0.13116816, 0.106667176, 0.054241523, -0.13116816, -0.11600963, 0.022255078, -0.12629734, -0.1170332, 0.02245979, -0.12629734, -0.11923386, -0.0043832213, -0.12629734, -0.11542108, -0.031021535, -0.12629734, -0.105748385, -0.05615008, -0.12629734, -0.09075314, -0.07848941, -0.12629734, -0.071151845, -0.096939184, -0.12629734, -0.047916897, -0.11055261, -0.12629734, -0.022250973, -0.11866437, -0.12629734, 0.004566461, -0.12086504, -0.12629734, 0.03123036, -0.11705226, -0.12629734, 0.056358904, -0.107379556, -0.12629734, 0.07869823, -0.09238431, -0.12629734, 0.097148016, -0.07278302, -0.12629734, 0.11076145, -0.049548075, -0.12629734, 0.11887321, -0.023882158, -0.12629734, 0.12107387, 0.0029352754, -0.12629734, 0.1172611, 0.02959916, -0.13116816, 0.11623752, 0.029317677, -0.13116816, -0.11818471, -0.0043320507, -0.13116816, -0.11439752, -0.030740052, -0.13116816, -0.10482717, -0.055663884, -0.13116816, -0.089959875, -0.077824086, -0.13116816, -0.070512116, -0.09609474, -0.13116816, -0.047507465, -0.10960581, -0.13116816, -0.02204626, -0.11764081, -0.13116816, 0.0045408756, -0.119815886, -0.13116816, 0.030948877, -0.11602869, -0.13116816, 0.05587271, -0.10645834, -0.13116816, 0.078007326, -0.091591045, -0.13116816, 0.09630358, -0.0721433, -0.13116816, 0.109814644, -0.04913865, -0.13116816, 0.11784965, -0.023677446, -0.13116816, 0.120024726, 0.0029096752)
 
+[sub_resource type="Curve" id="Curve_ny56w"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6315789, 0.79775286), 0.0, 0.0, 0, 0, Vector2(1, 0.50561804), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_wlcnu"]
+curve = SubResource("Curve_ny56w")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wqd5p"]
+emission_shape_scale = Vector3(0.2, 0.2, 0.2)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 1, 0)
+spread = 90.0
+initial_velocity_min = 0.099999994
+initial_velocity_max = 0.39999998
+gravity = Vector3(1, 3, 0.5)
+scale_curve = SubResource("CurveTexture_wlcnu")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8bigk"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1.6372112, 0.85723096, 0.86352116, 0.4392157)
+
+[sub_resource type="SphereMesh" id="SphereMesh_xq0eq"]
+material = SubResource("StandardMaterial3D_8bigk")
+radius = 0.2
+height = 0.4
+radial_segments = 8
+rings = 4
+
+[sub_resource type="Curve" id="Curve_wlcnu"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6315789, 0.79775286), 0.0, 0.0, 0, 0, Vector2(1, 0.50561804), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_wqd5p"]
+curve = SubResource("Curve_wlcnu")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8bigk"]
+emission_shape_scale = Vector3(0.6, 0.1, 0.6)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 1, 0)
+spread = 90.0
+initial_velocity_min = 0.099999994
+initial_velocity_max = 0.39999998
+gravity = Vector3(1, 3, 0.5)
+scale_curve = SubResource("CurveTexture_wqd5p")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xq0eq"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.46724084, 0.24708511, 0.29111627, 0.4392157)
+
+[sub_resource type="SphereMesh" id="SphereMesh_mmdtv"]
+material = SubResource("StandardMaterial3D_xq0eq")
+radius = 0.2
+height = 0.4
+radial_segments = 8
+rings = 4
+
+[sub_resource type="Curve" id="Curve_mmdtv"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.78947365, 0.82022476), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_pqbgr"]
+curve = SubResource("Curve_mmdtv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_21hbo"]
+lifetime_randomness = 1.0
+particle_flag_align_y = true
+direction = Vector3(0, 1, 0)
+spread = 110.0
+initial_velocity_min = 16.0
+initial_velocity_max = 48.0
+gravity = Vector3(0, -7, 0)
+damping_min = 3.0000002
+damping_max = 6.0000005
+scale_curve = SubResource("CurveTexture_pqbgr")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_65b7j"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(3.474164, 1.073506, 0.5881271, 0.63529414)
+
+[sub_resource type="SphereMesh" id="SphereMesh_jha0i"]
+material = SubResource("StandardMaterial3D_65b7j")
+radius = 0.1
+height = 0.4
+radial_segments = 8
+rings = 4
+
 [node name="VehicleBody3D" type="VehicleBody3D" groups=["rovers"]]
 collision_mask = 3
 mass = 100.0
@@ -863,6 +954,8 @@ mesh = SubResource("ArrayMesh_dobgo")
 skeleton = NodePath("")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 2.0
+path_max_distance = 10.01
 
 [node name="grace_period" type="Timer" parent="."]
 wait_time = 3.0
@@ -912,5 +1005,43 @@ shape = SubResource("ConvexPolygonShape3D_mmdtv")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.52616805, 0.12900001, 0.10607211)
 shape = SubResource("ConvexPolygonShape3D_pqbgr")
 
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.66248894, 0)
+emitting = false
+amount = 64
+amount_ratio = 0.25
+fixed_fps = 15
+process_material = SubResource("ParticleProcessMaterial_wqd5p")
+draw_pass_1 = SubResource("SphereMesh_xq0eq")
+
+[node name="GPUParticles3D3" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.66248894, 0)
+emitting = false
+amount = 96
+amount_ratio = 0.25
+lifetime = 1.5
+fixed_fps = 15
+process_material = SubResource("ParticleProcessMaterial_8bigk")
+draw_pass_1 = SubResource("SphereMesh_mmdtv")
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4877466, 0)
+emitting = false
+amount = 64
+lifetime = 0.15000000000000002
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_21hbo")
+draw_pass_1 = SubResource("SphereMesh_jha0i")
+
+[node name="reversetimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="reversetimercooldown" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
 [connection signal="timeout" from="body/turrettraverse/lasermod/laser/acquiretime" to="body/turrettraverse/lasermod/laser" method="_on_acquiretime_timeout"]
 [connection signal="timeout" from="body/turrettraverse/lasermod/laser/losetime" to="body/turrettraverse/lasermod/laser" method="_on_losetime_timeout"]
+[connection signal="timeout" from="reversetimer" to="." method="_on_reversetimer_timeout"]

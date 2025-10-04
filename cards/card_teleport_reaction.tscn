@@ -156,7 +156,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.15),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": ["", "You: RMB to teleport where you're aiming. Up to 20m."]
+"values": ["", "You: RMB to teleport where you're aiming. Up to 15m."]
 }
 tracks/5/type = "value"
 tracks/5/imported = false

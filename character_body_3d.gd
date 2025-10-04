@@ -3,6 +3,7 @@ extends CharacterBody3D
 @onready var camera: Camera3D = $Camera3D
 @onready var animp: AnimationPlayer = $AnimationPlayer
 @onready var raycast: RayCast3D = $Camera3D/GunHolder/gun/RayCast3D
+@onready var shieldbreak: AudioStreamPlayer = $shieldbreak
 
 var cards: Dictionary = {
 	"doublejump_speed" : preload("res://cards/card_doublejump_speed.tscn").instantiate(),
@@ -26,20 +27,33 @@ var sensitivity: float = 0.002
 var base_speed: float = 1.5
 var max_jumps = 1
 var current_jumps = 0
-var HP = 10000.0
+var HP = 100.0
 var dead: bool = false
 var run: int = 0
 var has_teleport_card: bool = false
+var has_gun_card: bool = false
 var has_life_card: bool = false
 var has_life: bool = false
 var invistime: float = 0.0
 var gun_default_pos: Vector3 = Vector3(0.141, -0.14, -0.22)
 
+func _ready() -> void:
+	$"lacebark pine".play()
+	AudioServer.set_bus_volume_linear(1, $MainMenu/Panel/MarginContainer/HBoxContainer/Music.value)
+
 func start() -> void:
+	$"lacebark pine".stop()
+	$rumble.play()
 	$survivetimer.start()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("LMB") and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
+		$miscclick.pitch_scale = 0.5
+		$miscclick.play()
+	if Input.is_action_just_released("LMB") and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
+		$miscclick.pitch_scale = 0.9
+		$miscclick.play()
 	if Input.is_action_just_pressed("Ctrl") and $invistime.is_stopped() and $inviscooldown.is_stopped() and invistime > 0.0:
 		set_collision_layer_value(3, false)
 		set_collision_mask_value(3, false)
@@ -52,16 +66,30 @@ func _input(event: InputEvent) -> void:
 		rotation.y -= event.relative.x * sensitivity
 		$Camera3D/GunHolder.rotation.x += event.relative.y * 0.0006
 		$Camera3D/GunHolder.rotation.y += event.relative.x * 0.0006
+
 func _process(delta: float) -> void:
+	if get_tree().paused:
+		$UI/crosshair.hide()
+		$UI/teleportreloadUI.hide()
+		$UI/crosshair.hide()
+	else:
+		if has_gun_card:
+			$UI/crosshair.show()
+		if has_teleport_card:
+			$UI/teleportreloadUI.show()
+			$UI/crosshair.show()
 	if get_tree().paused:
 		$inviscooldown.stop()
 		$invistime.stop()
 		return
 	if HP <= 0.0 and not dead:
 		death()
-
-	# gun handling
 	if $Camera3D/teleportray.is_colliding():
+		$UI/crosshair.modulate = Color.GREEN
+	else:
+		$UI/crosshair.modulate = Color.WHITE
+	# gun handling
+	if $Camera3D/gunray.is_colliding():
 		$Camera3D/TargetRotation.look_at($Camera3D/gunray.get_collision_point())
 	else:
 		$Camera3D/TargetRotation.rotation = Vector3.ZERO
@@ -92,8 +120,16 @@ func _process(delta: float) -> void:
 			global_position = $Camera3D/teleportray.get_collision_point() + Vector3(0.0, ($MeshInstance3D.mesh.height * $MeshInstance3D.scale.y) + 0.1, 0.0)
 			$teleportcooldown.start()
 	# shoot
-	if Input.is_action_just_pressed("LMB"):
+	if Input.is_action_pressed("LMB") and $shootcooldown.is_stopped() and has_gun_card:
+		$shootcooldown.start()
+		$lasershoot.play()
+		var laser = preload("res://laser.tscn").instantiate()
+		laser.global_transform = $Camera3D/GunHolder.global_transform
+		get_tree().root.add_child(laser)
+		$Camera3D/GunHolder.rotation_degrees.x += 5
+		$Camera3D/GunHolder.position.z += 0.1
 		if raycast.is_colliding() and not raycast.get_collider().is_in_group("terrain"):
+			animp.play("hit")
 			var target = raycast.get_collider()
 			var shape_id = raycast.get_collider_shape()
 			var owner_id = target.shape_find_owner(shape_id)
@@ -105,7 +141,10 @@ func _process(delta: float) -> void:
 				get_tree().call_group("rovers", "laser_hit")
 			elif shape.name == "Body":
 				get_tree().call_group("rovers", "body_hit")
-	$UI/timeremaining.text = str(int($survivetimer.time_left - 0.1) + 1)
+	if not get_tree().paused:
+		$UI/timeremaining.text = str(int($survivetimer.time_left - 0.1) + 1)
+	else:
+		$UI/timeremaining.text = "0"
 	# movement
 	var speed: float
 	var forward = Input.get_axis("W", "S")
@@ -129,10 +168,13 @@ func _process(delta: float) -> void:
 	move_and_slide()
 
 func death():
+	$rumble.stop()
 	$hit.play()
 	get_tree().paused = true
 	dead = true
 	animp.play("death")
+	await get_tree().create_timer(0.5).timeout
+	$"peaceful residence".play()
 
 func disp_cards():
 	for i in range(3):
@@ -157,7 +199,6 @@ func disp_cards_good():
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func clicked(cardname: String):
-	$click.play()
 	var parts = cardname.split("_")
 	var name = parts[0]
 	match name:
@@ -171,7 +212,7 @@ func clicked(cardname: String):
 			has_life_card = true
 			cards.erase("life_accuracy")
 		"xray":
-			get_tree().call_group("rover", "xray")
+			get_tree().call_group("rovers", "xray")
 			cards.erase("xray_speed")
 		"teleport":
 			$UI/crosshair.show()
@@ -181,6 +222,11 @@ func clicked(cardname: String):
 		"size":
 			scale *= 0.5
 			cards.erase("size_speed")
+		"gun":
+			$Camera3D/GunHolder.show()
+			$Camera3D/GunHolder/gun/RayCast3D.enabled = true
+			$UI/crosshair.show()
+			has_gun_card = true
 		"bad":
 			print("bad luck")
 		_:
@@ -188,6 +234,10 @@ func clicked(cardname: String):
 	respawn()
 
 func respawn():
+	set_collision_layer_value(3, true)
+	set_collision_mask_value(3, true)
+	$"peaceful residence".stop()
+	$rumble.play()
 	run += 1
 	if has_life_card:
 		has_life = true
@@ -207,8 +257,11 @@ func respawn():
 	global_position = ray["position"] + Vector3(0.0, 2.0, 0.0)
 
 func timeout():
+	$rumble.stop()
 	get_tree().paused = true
 	animp.play("timeout")
+	await get_tree().create_timer(0.5).timeout
+	$"peaceful residence".play()
 
 
 func _on_start_game_button_up() -> void:
@@ -240,11 +293,22 @@ func _on_invistime_timeout() -> void:
 	set_collision_layer_value(3, true)
 	set_collision_mask_value(3, true)
 
-
 func _on_inviscooldown_timeout() -> void:
 	$invisready.play()
 	await get_tree().create_timer(0.12).timeout
 	$invisready.play()
 
 func erase(key: String):
-	cards.erase(key)
+	cardsbad.erase(str(key))
+
+func win():
+	$survivetimer.stop()
+	get_tree().paused = true
+	$rumble.stop()
+	$"rumcherry(reprise)".play()
+	$UI.hide()
+	$Win.show()
+
+
+func _on_sensitvity_value_changed(value: float) -> void:
+	sensitivity = value * 0.1

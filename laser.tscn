@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://dlla6268t1c3q"]
+
+[ext_resource type="Script" uid="uid://dgb861cstagjr" path="res://laserscene.gd" id="1_fn5yt"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_6vqwg"]
+size = Vector3(0.01, 0.01, 0.01)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g6b45"]
+transparency = 1
+albedo_color = Color(1, 0.5137255, 0.5137255, 0.88235295)
+emission_enabled = true
+emission = Color(1, 0.5137255, 0.5137255, 1)
+emission_energy_multiplier = 16.0
+
+[node name="Laser" type="RayCast3D"]
+target_position = Vector3(0, 0, -1000)
+script = ExtResource("1_fn5yt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("BoxMesh_6vqwg")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_g6b45")
