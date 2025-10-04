@@ -37,7 +37,7 @@ var has_gun_card: bool = false
 var has_life_card: bool = false
 var has_life: bool = false
 var invistime: float = 0.0
-var playtime_multiplier: float = 1.0
+var playtime_multiplier: float = 2.0
 var gun_default_pos: Vector3 = Vector3(0.141, -0.14, -0.22)
 
 func _ready() -> void:
@@ -190,7 +190,7 @@ func disp_cards():
 
 
 func disp_cards_good():
-	if run < randi_range(1 * playtime_multiplier, 1 * playtime_multiplier):
+	if run < randi_range(8 * playtime_multiplier, 16 * playtime_multiplier):
 		for i in range(3):
 			var idx = randi_range(0, cards.size() - 1)
 			$UI/HBoxContainer.add_child(cards[cards.keys()[idx]].duplicate())
@@ -316,7 +316,6 @@ func win():
 	animp.stop()
 	animp.play("win")
 	$survivetimer.stop()
-	$rumble.stop()
 	$"rumcherry(reprise)".play()
 	await get_tree().create_timer(7.0).timeout
 	get_tree().paused = true
