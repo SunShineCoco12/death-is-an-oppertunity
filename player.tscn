@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=4 uid="uid://ccqa4pvvwnccx"]
+[gd_scene load_steps=48 format=4 uid="uid://ccqa4pvvwnccx"]
 
 [ext_resource type="Script" uid="uid://1qi1xoptnqt3" path="res://character_body_3d.gd" id="1_4flbx"]
 [ext_resource type="Shader" uid="uid://cc1e2essrs5p7" path="res://player.gdshader" id="2_onrkg"]
@@ -606,11 +606,47 @@ tracks/12/keys = {
 "values": [-10.0, -80.0]
 }
 
+[sub_resource type="Animation" id="Animation_q13i1"]
+resource_name = "invison"
+length = 0.57
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Vignette:material:shader_parameter/color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.57),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0.23529412, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_pylmc"]
+resource_name = "invisoff"
+length = 0.57
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/Vignette:material:shader_parameter/color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.57),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0.23529412, 1), Color(0, 0, 0, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_sweqy"]
 _data = {
 &"RESET": SubResource("Animation_hqtel"),
 &"death": SubResource("Animation_i3pqv"),
 &"hit": SubResource("Animation_606se"),
+&"invisoff": SubResource("Animation_pylmc"),
+&"invison": SubResource("Animation_q13i1"),
 &"timeout": SubResource("Animation_sweqy"),
 &"win": SubResource("Animation_bwjto")
 }
@@ -749,6 +785,7 @@ script = ExtResource("1_4flbx")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0.3, 0)
+visible = false
 mesh = SubResource("CapsuleMesh_onrkg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -936,6 +973,7 @@ theme_override_font_sizes/font_size = 32
 text = "What is going on?"
 
 [node name="HelpLabel" type="Label" parent="MainMenu"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -948,14 +986,13 @@ At the end of a run, you get to pick between 3 cards that decide what upgrades w
 The red portion of the card is what the rover gets, the blue portion is what you get.
 Dying results in only the rover being upgraded.
 Surviving results in both you and the rover being upgraded.
-After ~12 runs (default), a special upgrade becomes available that allows you to win the game."
+After ~24 runs (default), a special upgrade becomes available that allows you to win the game."
 label_settings = SubResource("LabelSettings_sweqy")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="UI" type="Control" parent="."]
 process_mode = 3
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -979,6 +1016,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -576.0
+offset_top = -324.0
 offset_right = -576.0
 offset_bottom = -324.0
 grow_horizontal = 2
@@ -999,6 +1038,7 @@ label_settings = SubResource("LabelSettings_i3pqv")
 
 [node name="crosshair" type="TextureRect" parent="UI"]
 visible = false
+self_modulate = Color(1, 1, 1, 0.39215687)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1096,6 +1136,8 @@ jsfxr(sfxr.me) for providing sfx tools
 Jacksepticeye and Ducky Dev for hosting this game jam
 Itch.io for allowing me to show you this project
 IvoryTV(x.com/ivorycello) for her amazing soundtracks
+
+And you, for playing this game.
 "
 label_settings = SubResource("LabelSettings_bwjto")
 horizontal_alignment = 1
@@ -1107,6 +1149,7 @@ one_shot = true
 
 [node name="hit" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_hqtel")
+bus = &"sfx"
 
 [node name="inviscooldown" type="Timer" parent="."]
 wait_time = 5.0
@@ -1118,19 +1161,23 @@ one_shot = true
 [node name="invison" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_n7ghd")
 volume_db = 8.0
+bus = &"sfx"
 
 [node name="invisoff" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_nvl01")
 volume_db = 8.0
+bus = &"sfx"
 
 [node name="invisready" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("9_ivps1")
 volume_db = -15.0
-max_polyphony = 2
+max_polyphony = 5
+bus = &"sfx"
 
 [node name="shieldbreak" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_n7ghd")
 pitch_scale = 1.5
+bus = &"sfx"
 
 [node name="teleportcooldown" type="Timer" parent="."]
 wait_time = 4.0
@@ -1142,6 +1189,7 @@ one_shot = true
 [node name="lasershoot" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_nvl01")
 pitch_scale = 1.5
+bus = &"sfx"
 
 [node name="rumcherry(reprise)" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("12_606se")

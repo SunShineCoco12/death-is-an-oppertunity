@@ -63,6 +63,7 @@ var gun_default_pos: Vector3 = Vector3(0.141, -0.14, -0.22)
 var collided_last_frame: bool = false
 var last_mouse_mode
 var mouse_mode_changed: bool = false
+var camera_shake: float = 2.0
 
 func _ready() -> void:
 	AudioServer.set_bus_layout(bus)
@@ -87,6 +88,8 @@ func _input(event: InputEvent) -> void:
 		set_collision_layer_value(3, false)
 		set_collision_mask_value(3, false)
 		$invison.play()
+		if not won:
+			animp.play("invison")
 		$invistime.start(invistime)
 	if Input.is_action_just_pressed("Esc"):
 		get_tree().quit()
@@ -97,14 +100,27 @@ func _input(event: InputEvent) -> void:
 		gunholder.rotation.y += event.relative.x * 0.0006
 
 func _process(delta: float) -> void:
-	if Input.mouse_mode != last_mouse_mode:
-		mouse_mode_changed = true
-	if won:
-		AudioServer.set_bus_volume_linear(AudioServer.get_bus_index("sfx"), $MainMenu/Panel/MarginContainer/HBoxContainer/SFX.value * sfxbusaudio)
+	if has_gun_card:
+		$UI/timeremaining.text = "-1"
+		survivetimer.stop()
+	camera_shake = lerp(camera_shake, 0.0, delta * 3)
 	if get_tree().paused:
 		$inviscooldown.stop()
 		$invistime.stop()
 		return
+	camera.rotation.z = lerp(camera.rotation.z, 0.0, delta * 5)
+	camera.rotation.z = lerp(camera.rotation.z, -(velocity * global_transform.basis).x, delta * 0.35)
+	camera.h_offset = lerp(0.0, randf_range(-camera_shake, camera_shake), delta * 3)
+	camera.v_offset = lerp(0.0, randf_range(-camera_shake, camera_shake), delta * 3)
+	camera.h_offset = lerp(camera.h_offset, 0.0, delta * 0.1)
+	camera.v_offset = lerp(camera.v_offset, 0.0, delta * 0.1)
+	camera.global_position += velocity * -0.003
+	camera.position = lerp(camera.position, Vector3(0.0, 0.45, 0.0), delta * 10)
+
+	if Input.mouse_mode != last_mouse_mode:
+		mouse_mode_changed = true
+	if won:
+		AudioServer.set_bus_volume_linear(AudioServer.get_bus_index("sfx"), $MainMenu/Panel/MarginContainer/HBoxContainer/SFX.value * sfxbusaudio)
 	if HP <= 0.0 and not dead:
 		death()
 	if has_teleport_card and $Camera3D/teleportray.is_colliding():
@@ -147,6 +163,8 @@ func _process(delta: float) -> void:
 			$teleportcooldown.start()
 	# shoot
 	if Input.is_action_pressed("LMB") and $shootcooldown.is_stopped() and has_gun_card:
+		camera.position.z += 0.02
+		camera_shake += 0.5
 		$shootcooldown.start()
 		$AnimationPlayer2.play("reload")
 		$lasershoot.play()
@@ -156,17 +174,24 @@ func _process(delta: float) -> void:
 		gunholder.rotation_degrees.x += 5
 		gunholder.position.z += 0.1
 		if raycast.is_colliding() and not raycast.get_collider().is_in_group("terrain"):
-			animp.play("hit")
+			if not won:
+				animp.play("hit")
+			var impact = preload("uid://eu8c40eo5rbj").instantiate()
+			get_tree().root.add_child(impact)
+			impact.global_position = raycast.get_collision_point()
 			var target = raycast.get_collider()
 			var shape_id = raycast.get_collider_shape()
 			var owner_id = target.shape_find_owner(shape_id)
 			var shape = target.shape_owner_get_owner(owner_id)
 			var parts = shape.name.split("_")
 			if parts.size() > 1:
+				raycast.get_collider().apply_impulse(camera.global_transform.basis.z * 100, raycast.get_collider().global_position - raycast.get_collision_point())
 				get_tree().call_group("rovers", "remove_wheel", parts[1])
 			elif shape.name == "laser":
+				raycast.get_collider().apply_impulse(camera.global_transform.basis.z * 100, raycast.get_collider().global_position - raycast.get_collision_point())
 				get_tree().call_group("rovers", "laser_hit")
 			elif shape.name == "Body":
+				raycast.get_collider().apply_impulse(camera.global_transform.basis.z * 100, raycast.get_collider().global_position - raycast.get_collision_point())
 				get_tree().call_group("rovers", "body_hit")
 	if not get_tree().paused:
 		$UI/timeremaining.text = str(int(survivetimer.time_left - 0.1) + 1)
@@ -208,13 +233,23 @@ func death():
 
 func disp_cards():
 	var indices: Array = []
-	for i in range(3):
-		var idx = randi_range(0, cardsbad.size() - 1)
-		while idx in indices:
-			idx = randi_range(0, cardsbad.size() - 1)
-		indices.append(idx)
-		await get_tree().create_timer(0.35).timeout
-		$UI/HBoxContainer.add_child(cardsbad[cardsbad.keys()[idx]].instantiate())
+	if run < randi_range(-1 * playtime_multiplier, -1 * playtime_multiplier):
+		for i in range(3):
+			var idx = randi_range(0, cardsbad.size() - 1)
+			while idx in indices:
+				idx = randi_range(0, cardsbad.size() - 1)
+			indices.append(idx)
+			$UI/HBoxContainer.add_child(cardsbad[cardsbad.keys()[idx]].instantiate())
+			await get_tree().create_timer(0.35).timeout
+	else:
+		for i in range(2):
+			var idx = randi_range(0, cardsbad.size() - 1)
+			while idx in indices:
+				idx = randi_range(0, cardsbad.size() - 1)
+			indices.append(idx)
+			$UI/HBoxContainer.add_child(cardsbad[cardsbad.keys()[idx]].instantiate())
+			await get_tree().create_timer(0.35).timeout
+		$UI/HBoxContainer.add_child(cardgood.instantiate())
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	last_mouse_mode = Input.mouse_mode
 
@@ -296,8 +331,10 @@ func respawn():
 	set_collision_mask_value(3, true)
 	$"peaceful residence".stop()
 	if has_gun_card:
+		$UI/timeremaining.text = "-1"
 		$chalksnap.play()
 	else:
+		survivetimer.start()
 		$rumble.play()
 	run += 1
 	if has_life_card:
@@ -308,10 +345,6 @@ func respawn():
 	if has_teleport_card:
 		$UI/teleportreloadUI.show()
 		crosshair.show()
-	if not has_gun_card:
-		survivetimer.start()
-	else:
-		$UI/timeremaining.text = "-1"
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	last_mouse_mode = Input.mouse_mode
 	animp.play("RESET")
@@ -358,6 +391,8 @@ func _on_help_button_up() -> void:
 func _on_invistime_timeout() -> void:
 	$inviscooldown.start()
 	$invisoff.play()
+	if not won:
+		animp.play("invisoff")
 	set_collision_layer_value(3, true)
 	set_collision_mask_value(3, true)
 
@@ -370,9 +405,10 @@ func erase(name: String):
 	for key in cardsbad.keys():
 		var part = key.split("_")[1]
 		if part == str(name):
-			cards.erase(str(key))
+			cardsbad.erase(str(key))
 
 func win():
+	camera_shake = 4.0
 	won = true
 	animp.stop()
 	animp.play("win")

@@ -5,7 +5,9 @@ extends Control
 @export var cardname: String
 @export var textplayer: String
 @export var textrover: String
+
 @onready var animp: AnimationPlayer = $AnimationPlayer
+@onready var button: Button = $Button
 
 func _ready() -> void:
 	name = cardname
@@ -14,12 +16,16 @@ func _ready() -> void:
 	$textplayer.text = textplayer
 	$textrover.text = textrover
 	animp.play("turn")
+	button.button_down.connect(on_button_button_down)
 
+func on_button_button_down():
+	scale = Vector2(0.9, 0.9)
 
 func _on_button_button_up() -> void:
 	get_tree().call_group("players", "clicked", cardname)
 	get_tree().call_group("rovers", "clicked", cardname)
 	get_tree().call_group("cards", "reset")
+	scale = Vector2(1.0, 1.0)
 
 func reset():
 	queue_free()

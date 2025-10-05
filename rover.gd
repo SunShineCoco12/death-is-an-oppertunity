@@ -39,7 +39,7 @@ func _integrate_forces(state):
 		state.transform = Transform3D(Basis(), Vector3.ZERO)
 		reset_state = false
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if not $grace_period.is_stopped() or dead:
 		return
 
@@ -163,7 +163,7 @@ func death():
 				var right: RigidBody3D = rightwheelscene.instantiate()
 				get_tree().root.add_child(right)
 				right.global_transform = wheel.global_transform
-				right.apply_impulse(-right.global_transform.basis.x * 8)
+				right.apply_impulse(right.global_transform.basis.x * 8)
 			wheel.queue_free()
 	for wheel_collider in wheel_colliders:
 		wheel_collider.queue_free()

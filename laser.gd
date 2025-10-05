@@ -37,6 +37,7 @@ func fire(player):
 		else:
 			player.has_life = false
 			player.shieldbreak.play()
+			player.camera.global_position -= (global_position - player.global_position).normalized() * 0.1
 		print("die")
 	distance = (global_position - get_collision_point()).length()
 	mesh.mesh.size = Vector3(0.02, distance, 0.02)
