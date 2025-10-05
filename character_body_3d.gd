@@ -35,6 +35,7 @@ var cards: Dictionary = {
 	"invis_grace" : preload("res://cards/card_invis_grace.tscn"),
 	"xray_accuracy" : preload("res://cards/card_xray_accuracy.tscn"),
 	"life_speed" : preload("res://cards/card_life_speed.tscn"),
+	"teleport_accuracy" : preload("res://cards/card_teleport_accuracy.tscn"),
 }
 var cardsbad: Dictionary = {
 	"bad_accuracy" : preload("res://cards/card_bad_accuracy.tscn"),
