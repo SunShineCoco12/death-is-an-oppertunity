@@ -1263,6 +1263,7 @@ max_polyphony = 10
 bus = &"sfx"
 
 [node name="cooldown" type="Timer" parent="body/turrettraverse/lasermod/laser"]
+wait_time = 0.75
 one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="body/turrettraverse/lasermod/laser"]

@@ -5,7 +5,7 @@ extends RayCast3D
 
 var distance: float
 var target: bool = false
-var spread = 0.1
+var spread = 0.05
 
 func _process(delta: float) -> void:
 	if not $"../../../../grace_period".is_stopped():
