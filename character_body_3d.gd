@@ -12,6 +12,7 @@ extends CharacterBody3D
 @onready var crosshair: TextureRect = $UI/crosshair
 @onready var gunray: RayCast3D = $Camera3D/gunray
 @onready var targetrotation: Node3D = $Camera3D/TargetRotation
+@onready var footstepsounds: Array[Resource] = [preload("uid://cw3ew84sabt7o"), preload("uid://dhv4xodrlc688"), preload("uid://dqcvsh0bcq2qr"), preload("uid://c73sr3ace6hmn"), preload("uid://qx5fkgq0etsj")]
 
 @export var sfxbusaudio: float = 1.0
 
@@ -64,7 +65,9 @@ var gun_default_pos: Vector3 = Vector3(0.141, -0.14, -0.22)
 var collided_last_frame: bool = false
 var last_mouse_mode
 var mouse_mode_changed: bool = false
-var camera_shake: float = 2.0
+var camera_shake: float = 1.0
+var distance_travelled: float = 0.0
+var was_in_air: bool = false
 
 func _ready() -> void:
 	AudioServer.set_bus_layout(bus)
@@ -101,14 +104,33 @@ func _input(event: InputEvent) -> void:
 		gunholder.rotation.y += event.relative.x * 0.0006
 
 func _process(delta: float) -> void:
-	if has_gun_card:
-		$UI/timeremaining.text = "-1"
-		survivetimer.stop()
-	camera_shake = lerp(camera_shake, 0.0, delta * 3)
 	if get_tree().paused:
 		$inviscooldown.stop()
 		$invistime.stop()
 		return
+
+
+	if is_on_floor():
+		distance_travelled += (absf(velocity.x) + absf(velocity.z)) * delta
+		if was_in_air:
+			$footsteps2.stream = footstepsounds[randi_range(0, 4)]
+			$footsteps2.pitch_scale = randf_range(0.9, 1.1)
+			$footsteps2.volume_db = randf_range(-44, -40)
+			$footsteps2.play()
+			camera_shake += 0.25
+			was_in_air = false
+		elif distance_travelled > 0.75:
+			distance_travelled -= 0.75
+			$footsteps.stream = footstepsounds[randi_range(0, 4)]
+			$footsteps.pitch_scale = randf_range(0.9, 1.1)
+			$footsteps.volume_db = randf_range(-53, -47)
+			$footsteps.play()
+	else:
+		was_in_air = true
+	if has_gun_card:
+		$UI/timeremaining.text = "-1"
+		survivetimer.stop()
+	camera_shake = lerp(camera_shake, 0.0, delta * 3)
 	camera.rotation.z = lerp(camera.rotation.z, 0.0, delta * 5)
 	camera.rotation.z = lerp(camera.rotation.z, -(velocity * global_transform.basis).x, delta * 0.35)
 	camera.h_offset = lerp(0.0, randf_range(-camera_shake, camera_shake), delta * 3)
@@ -214,6 +236,8 @@ func _process(delta: float) -> void:
 		velocity.z = 0.0
 		velocity += (strafe * global_transform.basis.x * speed) / scale.length()
 		velocity += (forward * global_transform.basis.z * speed) / scale.length()
+		if absf(strafe) > 0.0 and absf(forward) > 0.0:
+			velocity /= sqrt(2)
 	if Input.is_action_just_pressed("Space") and current_jumps < max_jumps:
 		velocity.y = 3
 		current_jumps += 1

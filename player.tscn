@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=4 uid="uid://ccqa4pvvwnccx"]
+[gd_scene load_steps=49 format=4 uid="uid://ccqa4pvvwnccx"]
 
 [ext_resource type="Script" uid="uid://1qi1xoptnqt3" path="res://character_body_3d.gd" id="1_4flbx"]
 [ext_resource type="Shader" uid="uid://cc1e2essrs5p7" path="res://player.gdshader" id="2_onrkg"]
@@ -14,6 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://fj6aowgd7u05" path="res://assets/audio/peaceful residence - ivory.ogg" id="14_op7ga"]
 [ext_resource type="AudioStream" uid="uid://bjfn2icvadtlb" path="res://assets/audio/chalksnap - ivory.ogg" id="15_606se"]
 [ext_resource type="AudioStream" uid="uid://bqxqcslagyihl" path="res://assets/audio/lacebark pine - whitepine.ogg" id="15_q13i1"]
+[ext_resource type="AudioStream" uid="uid://cw3ew84sabt7o" path="res://assets/audio/footstep1.ogg" id="16_op7ga"]
 [ext_resource type="AudioStream" uid="uid://dm7u5vv5q4qfr" path="res://assets/audio/click_004.ogg" id="16_u1c27"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_onrkg"]
@@ -1229,6 +1230,24 @@ parameters/looping = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, 324)
+
+[node name="footsteps" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("16_op7ga")
+volume_db = -20.0
+max_distance = 40.0
+max_polyphony = 99
+bus = &"sfx"
+attenuation_filter_cutoff_hz = 20500.0
+attenuation_filter_db = -50.0
+
+[node name="footsteps2" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("16_op7ga")
+volume_db = -20.0
+max_distance = 40.0
+max_polyphony = 99
+bus = &"sfx"
+attenuation_filter_cutoff_hz = 20500.0
+attenuation_filter_db = -50.0
 
 [connection signal="button_up" from="MainMenu/Panel/MarginContainer/HBoxContainer/StartGame" to="." method="_on_start_game_button_up"]
 [connection signal="value_changed" from="MainMenu/Panel/MarginContainer/HBoxContainer/Sensitvity" to="." method="_on_sensitvity_value_changed"]
