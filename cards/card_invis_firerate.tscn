@@ -262,7 +262,6 @@ libraries = {
 stream = ExtResource("6_oosky")
 pitch_scale = 1.1
 max_polyphony = 3
-bus = &"SFX"
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 1

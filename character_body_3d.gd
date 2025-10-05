@@ -221,6 +221,7 @@ func _process(delta: float) -> void:
 
 func death():
 	$rumble.stop()
+	$chalksnap.stop()
 	$hit.play()
 	get_tree().paused = true
 	crosshair.hide()
@@ -233,7 +234,7 @@ func death():
 
 func disp_cards():
 	var indices: Array = []
-	if run < randi_range(-1 * playtime_multiplier, -1 * playtime_multiplier):
+	if run < randi_range(8 * playtime_multiplier, 16 * playtime_multiplier):
 		for i in range(3):
 			var idx = randi_range(0, cardsbad.size() - 1)
 			while idx in indices:
@@ -411,7 +412,7 @@ func win():
 	camera_shake = 4.0
 	won = true
 	animp.stop()
-	animp.play("win")
+	#animp.play("win")
 	survivetimer.stop()
 	$"rumcherry(reprise)".play()
 	await get_tree().create_timer(11.0).timeout

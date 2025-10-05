@@ -8,8 +8,14 @@ extends Control
 
 @onready var animp: AnimationPlayer = $AnimationPlayer
 @onready var button: Button = $Button
+@onready var textplayerlabel: Label = $textplayer
+@onready var textroverlabel: Label = $textrover
+@onready var labelsettingsplayer = preload("uid://c1dabc5ghihal")
+@onready var labelsettingsrover = preload("uid://f3xovpc3xmmq")
 
 func _ready() -> void:
+	textplayerlabel.label_settings = labelsettingsplayer
+	textroverlabel.label_settings = labelsettingsrover
 	name = cardname
 	$card.texture = card
 	$icon.texture = icon

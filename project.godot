@@ -26,7 +26,6 @@ window/size/resizable=false
 [editor]
 
 movie_writer/video_quality=1.0
-movie_writer/ogv/encoding_speed=3
 movie_writer/movie_file="C:/Users/Matth/Documents/movie/movie.ogv"
 
 [editor_plugins]
