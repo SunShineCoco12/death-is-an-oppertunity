@@ -1,15 +1,21 @@
 extends VehicleBody3D
 
-@export var engine_power: float = 150.0
-@export var speed: float = 0.4
+@export var engine_power: float = 50.0
+@export var speed: float = 1.6
 @export var max_steer_degrees: float = 30.0
 
 @onready var wheels: Array[VehicleWheel3D] = [$VehicleWheel3D, $VehicleWheel3D2, $VehicleWheel3D3, $VehicleWheel3D4, $VehicleWheel3D5, $VehicleWheel3D6]
+@onready var leftwheels: Array[VehicleWheel3D] = [$VehicleWheel3D, $VehicleWheel3D4, $VehicleWheel3D5]
+@onready var rightwheels: Array[VehicleWheel3D] = [$VehicleWheel3D2, $VehicleWheel3D3, $VehicleWheel3D6]
 @onready var frontwheels: Array[VehicleWheel3D] = [$VehicleWheel3D3, $VehicleWheel3D4]
 @onready var rearwheels: Array[VehicleWheel3D] = [$VehicleWheel3D, $VehicleWheel3D2]
 @onready var wheel_colliders: Array[CollisionShape3D] = [$Wheel_1, $Wheel_2, $Wheel_3, $Wheel_4, $Wheel_5, $Wheel_6]
+@onready var panels: Array[MeshInstance3D] = [$body/backpanel, $body/panelsleft, $body/panelsleftchild, $body/panelsright, $body/panelsrightchild]
+@onready var panelscenes: Array[Resource] = [preload("uid://cbjjme13cjqyg"), preload("uid://xxwqpgw701iw"), preload("uid://bmy0o03fvtqnj"), preload("uid://ces6dhjnfx8tu"), preload("uid://bn51urnfrt40q")]
 @onready var nav_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var shieldbreak: AudioStreamPlayer = $shieldbreak
+@onready var leftwheelscene = preload("uid://bakrlrhtvondm")
+@onready var rightwheelscene = preload("uid://4qa7m8wb320")
 
 var target_pos: Vector3
 var player_pos: Vector3
@@ -37,7 +43,7 @@ func _process(delta: float) -> void:
 	if not $grace_period.is_stopped() or dead:
 		return
 
-	if linear_velocity.length() < 0.2:
+	if linear_velocity.length() < 0.35:
 		if $reversetimer.is_stopped() and $reversetimercooldown.is_stopped():
 			$reversetimer.start()
 	else:
@@ -66,7 +72,7 @@ func _process(delta: float) -> void:
 	target_pos = nav_agent.get_next_path_position()
 	var power = engine_power * clampf((speed / linear_velocity.length()), 0.001, 100.0)
 	$enginewhine.volume_db = -15.0
-	$enginewhine.pitch_scale = clampf((power / engine_power) * 2, 0.3, 1.75)
+	$enginewhine.pitch_scale = clampf((power / engine_power), 0.3, 1.75)
 	var input_vec3: Vector3 = Vector3((target_pos - global_position).x, 0.0, (target_pos - global_position).z)
 	var input_forward: Vector3 = -global_transform.basis.z
 	input_forward.y = 0.0
@@ -76,8 +82,8 @@ func _process(delta: float) -> void:
 		if is_instance_valid(wheel):
 			wheel.engine_force = power * -1.0
 			collectiverpm -= wheel.get_rpm()
-	$tiresrolling.pitch_scale = clampf((collectiverpm / 400) - 0.5, 0.1, 2.0)
-	$tiresrolling.volume_db = -20.0 + ((collectiverpm / 400) - 0.5) * 5
+	$tiresrolling.pitch_scale = clampf((collectiverpm / 600) - 0.5, 0.1, 2.0)
+	$tiresrolling.volume_db = -20.0 + ((collectiverpm / 600) - 0.5) * 5
 	for frontwheel in frontwheels:
 		if is_instance_valid(frontwheel):
 			frontwheel.steering = clampf(lerpf(frontwheel.steering, -angle_diff, delta * 5), deg_to_rad(-max_steer_degrees), deg_to_rad(max_steer_degrees))
@@ -129,13 +135,42 @@ func remove_wheel(idx):
 		wheels[int(idx) - 1].queue_free()
 
 func death():
+	$explosion.play(0.3)
+	for i in range(panels.size() - 1):
+		var panel = panels[i]
+		var panelscene: RigidBody3D = panelscenes[i].instantiate()
+		get_tree().root.add_child(panelscene)
+		panelscene.global_transform = panel.global_transform
+		if i == 0:
+			panelscene.apply_impulse(panelscene.global_transform.basis.z * 8)
+		elif i == 1:
+			panelscene.apply_impulse((-panelscene.global_transform.basis.z + -panelscene.global_transform.basis.x) * 4)
+		elif i == 2:
+			panelscene.apply_impulse(-panelscene.global_transform.basis.x * 8)
+		elif i == 3:
+			panelscene.apply_impulse((-panelscene.global_transform.basis.z + panelscene.global_transform.basis.x) * 4)
+		elif i == 4:
+			panelscene.apply_impulse(panelscene.global_transform.basis.x * 8)
+		panel.queue_free()
 	for wheel in wheels:
 		if is_instance_valid(wheel):
+			if wheel in leftwheels:
+				var left: RigidBody3D = leftwheelscene.instantiate()
+				get_tree().root.add_child(left)
+				left.global_transform = wheel.global_transform
+				left.apply_impulse(-left.global_transform.basis.x * 8)
+			elif wheel in rightwheels:
+				var right: RigidBody3D = rightwheelscene.instantiate()
+				get_tree().root.add_child(right)
+				right.global_transform = wheel.global_transform
+				right.apply_impulse(-right.global_transform.basis.x * 8)
 			wheel.queue_free()
 	for wheel_collider in wheel_colliders:
 		wheel_collider.queue_free()
 	dead = true
 	$GPUParticles3D3.amount_ratio = 1.0
+	$GPUParticles3D4.show()
+	$GPUParticles3D4.emitting = true
 	$GPUParticles3D2.emitting = true
 	get_tree().call_group("players", "win")
 
@@ -158,7 +193,7 @@ func _on_reversetimer_timeout() -> void:
 	print("yes")
 	engine_power = -engine_power
 	max_steer_degrees = -max_steer_degrees
-	await get_tree().create_timer(2.0).timeout
+	await get_tree().create_timer(2.5).timeout
 	engine_power = -engine_power
 	max_steer_degrees = -max_steer_degrees
 	$reversetimercooldown.start()

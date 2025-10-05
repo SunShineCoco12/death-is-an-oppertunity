@@ -4,59 +4,85 @@ extends CharacterBody3D
 @onready var animp: AnimationPlayer = $AnimationPlayer
 @onready var raycast: RayCast3D = $Camera3D/GunHolder/gun/RayCast3D
 @onready var shieldbreak: AudioStreamPlayer = $shieldbreak
+@onready var bus = preload("uid://c7lcjmtc7tdaq")
+@onready var laserscene = preload("res://laser.tscn")
+@onready var survivetimer: Timer = $survivetimer
+@onready var miscclick: AudioStreamPlayer = $miscclick
+@onready var gunholder: Node3D = $Camera3D/GunHolder
+@onready var crosshair: TextureRect = $UI/crosshair
+@onready var gunray: RayCast3D = $Camera3D/gunray
+@onready var targetrotation: Node3D = $Camera3D/TargetRotation
 
 @export var sfxbusaudio: float = 1.0
 
 var cards: Dictionary = {
-	"doublejump_speed" : preload("res://cards/card_doublejump_speed.tscn").instantiate(),
-	"invis_reaction" : preload("res://cards/card_invis_reaction.tscn").instantiate(),
-	"life_accuracy" : preload("res://cards/card_life_accuracy.tscn").instantiate(),
-	"size_speed" : preload("res://cards/card_size_speed.tscn").instantiate(),
-	"speed_firerate" : preload("res://cards/card_speed_firerate.tscn").instantiate(),
-	"teleport_reaction" : preload("res://cards/card_teleport_reaction.tscn").instantiate(),
-	"xray_speed" : preload("res://cards/card_xray_speed.tscn").instantiate(),
+	"doublejump_speed" : preload("res://cards/card_doublejump_speed.tscn"),
+	"invis_reaction" : preload("res://cards/card_invis_reaction.tscn"),
+	"life_accuracy" : preload("res://cards/card_life_accuracy.tscn"),
+	"size_speed" : preload("res://cards/card_size_speed.tscn"),
+	"speed_firerate" : preload("res://cards/card_speed_firerate.tscn"),
+	"teleport_reaction" : preload("res://cards/card_teleport_reaction.tscn"),
+	"xray_speed" : preload("res://cards/card_xray_speed.tscn"),
+	"speed_good" : preload("res://cards/card_speed_good.tscn"),
+	"life_reaction" : preload("res://cards/card_life_reaction.tscn"),
+	"teleport_speed" : preload("res://cards/card_teleport_speed.tscn"),
+	"time_firerate" : preload("res://cards/card_time_firerate.tscn"),
+	"xray_reaction" : preload("res://cards/card_xray_reaction.tscn"),
+	"invis_firerate" : preload("res://cards/card_invis_firerate.tscn"),
+	"size_grace" : preload("res://cards/card_size_grace.tscn"),
+	"doublejump_steer" : preload("res://cards/card_doublejump_steer.tscn"),
+	"size_good" : preload("res://cards/card_size_good.tscn"),
+	"invis_grace" : preload("res://cards/card_invis_grace.tscn"),
+	"xray_accuracy" : preload("res://cards/card_xray_accuracy.tscn"),
+	"life_speed" : preload("res://cards/card_life_speed.tscn"),
 }
 var cardsbad: Dictionary = {
-	"bad_accuracy" : preload("res://cards/card_bad_accuracy.tscn").instantiate(),
-	"bad_grace" : preload("res://cards/card_bad_grace.tscn").instantiate(),
-	"bad_reaction" : preload("res://cards/card_bad_reaction.tscn").instantiate(),
-	"bad_silent" : preload("res://cards/card_bad_silent.tscn").instantiate(),
-	"bad_steer" : preload("res://cards/card_bad_steer.tscn").instantiate(),
-	"bad_speed" : preload("res://cards/card_bad_speed.tscn").instantiate(),
+	"bad_accuracy" : preload("res://cards/card_bad_accuracy.tscn"),
+	"bad_grace" : preload("res://cards/card_bad_grace.tscn"),
+	"bad_reaction" : preload("res://cards/card_bad_reaction.tscn"),
+	"bad_silent" : preload("res://cards/card_bad_silent.tscn"),
+	"bad_steer" : preload("res://cards/card_bad_steer.tscn"),
+	"bad_speed" : preload("res://cards/card_bad_speed.tscn"),
 }
-var cardgood = preload("res://cards/card_gun_good.tscn").instantiate()
+var cardgood = preload("res://cards/card_gun_good.tscn")
 var sensitivity: float = 0.002
-var base_speed: float = 1.5
+var base_speed: float = 2.0
 var max_jumps = 1
 var current_jumps = 0
-var HP = 100.0
 var dead: bool = false
 var run: int = 0
+var HP = 100.0
 var has_teleport_card: bool = false
 var has_gun_card: bool = false
 var has_life_card: bool = false
 var has_life: bool = false
+var won: bool = false
 var invistime: float = 0.0
 var playtime_multiplier: float = 2.0
 var gun_default_pos: Vector3 = Vector3(0.141, -0.14, -0.22)
+var collided_last_frame: bool = false
+var last_mouse_mode
+var mouse_mode_changed: bool = false
 
 func _ready() -> void:
+	AudioServer.set_bus_layout(bus)
 	$"lacebark pine".play()
 	AudioServer.set_bus_volume_linear(1, $MainMenu/Panel/MarginContainer/HBoxContainer/Music.value)
 
 func start() -> void:
 	$"lacebark pine".stop()
 	$rumble.call_deferred("play")
-	$survivetimer.start()
+	survivetimer.start()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	last_mouse_mode = Input.mouse_mode
 
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("LMB") and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
-		$miscclick.pitch_scale = 0.5
-		$miscclick.play()
+		miscclick.pitch_scale = 0.5
+		miscclick.play()
 	if Input.is_action_just_released("LMB") and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
-		$miscclick.pitch_scale = 0.9
-		$miscclick.play()
+		miscclick.pitch_scale = 0.9
+		miscclick.play()
 	if Input.is_action_just_pressed("Ctrl") and $invistime.is_stopped() and $inviscooldown.is_stopped() and invistime > 0.0:
 		set_collision_layer_value(3, false)
 		set_collision_mask_value(3, false)
@@ -67,48 +93,44 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and not get_tree().paused:
 		camera.rotation.x = clampf(camera.rotation.x - event.relative.y * sensitivity, -PI/2, PI/2)
 		rotation.y -= event.relative.x * sensitivity
-		$Camera3D/GunHolder.rotation.x += event.relative.y * 0.0006
-		$Camera3D/GunHolder.rotation.y += event.relative.x * 0.0006
+		gunholder.rotation.x += event.relative.y * 0.0006
+		gunholder.rotation.y += event.relative.x * 0.0006
 
 func _process(delta: float) -> void:
-	AudioServer.set_bus_volume_linear(2, $MainMenu/Panel/MarginContainer/HBoxContainer/SFX.value * sfxbusaudio)
-	if get_tree().paused:
-		$UI/crosshair.hide()
-		$UI/teleportreloadUI.hide()
-		$UI/crosshair.hide()
-	else:
-		if has_gun_card:
-			$UI/crosshair.show()
-		if has_teleport_card:
-			$UI/teleportreloadUI.show()
-			$UI/crosshair.show()
+	if Input.mouse_mode != last_mouse_mode:
+		mouse_mode_changed = true
+	if won:
+		AudioServer.set_bus_volume_linear(AudioServer.get_bus_index("sfx"), $MainMenu/Panel/MarginContainer/HBoxContainer/SFX.value * sfxbusaudio)
 	if get_tree().paused:
 		$inviscooldown.stop()
 		$invistime.stop()
 		return
 	if HP <= 0.0 and not dead:
 		death()
-	if $Camera3D/teleportray.is_colliding() and has_teleport_card:
-		$UI/crosshair.modulate = Color.GREEN
-	else:
-		$UI/crosshair.modulate = Color.WHITE
+	if has_teleport_card and $Camera3D/teleportray.is_colliding():
+		if not collided_last_frame:
+			crosshair.modulate = Color.RED
+		collided_last_frame = true
+	elif collided_last_frame:
+		crosshair.modulate = Color.WHITE
+		collided_last_frame = false
 	# gun handling
-	if $Camera3D/gunray.is_colliding():
-		$Camera3D/TargetRotation.look_at($Camera3D/gunray.get_collision_point())
+	if gunray.is_colliding():
+		targetrotation.look_at(gunray.get_collision_point())
 	else:
-		$Camera3D/TargetRotation.rotation = Vector3.ZERO
-	$Camera3D/GunHolder.rotation = lerp($Camera3D/GunHolder.rotation, $Camera3D/TargetRotation.rotation, delta * 20)
-	$Camera3D/GunHolder.global_position += velocity * -0.0005
-	$Camera3D/GunHolder.position = lerp($Camera3D/GunHolder.position, gun_default_pos, delta * 5)
+		targetrotation.rotation = Vector3.ZERO
+	gunholder.rotation = lerp(gunholder.rotation, targetrotation.rotation, delta * 20)
+	gunholder.global_position += velocity * -0.0005
+	gunholder.position = lerp(gunholder.position, gun_default_pos, delta * 5)
 
 	$UI/teleportreloadUI.value = $teleportcooldown.wait_time - $teleportcooldown.time_left
-	if has_teleport_card:
+	if has_teleport_card and mouse_mode_changed:
 		if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			$UI/teleportreloadUI.hide()
-			$UI/crosshair.hide()
+			crosshair.hide()
 		else:
 			$UI/teleportreloadUI.show()
-			$UI/crosshair.show()
+			crosshair.show()
 	# set teleport progress bar color
 	if $UI/teleportreloadUI.value == $teleportcooldown.wait_time:
 		var style: StyleBoxFlat = $UI/teleportreloadUI.get_theme_stylebox("fill")
@@ -128,11 +150,11 @@ func _process(delta: float) -> void:
 		$shootcooldown.start()
 		$AnimationPlayer2.play("reload")
 		$lasershoot.play()
-		var laser = preload("res://laser.tscn").instantiate()
-		laser.global_transform = $Camera3D/GunHolder.global_transform
+		var laser = laserscene.instantiate()
+		laser.global_transform = gunholder.global_transform
 		get_tree().root.add_child(laser)
-		$Camera3D/GunHolder.rotation_degrees.x += 5
-		$Camera3D/GunHolder.position.z += 0.1
+		gunholder.rotation_degrees.x += 5
+		gunholder.position.z += 0.1
 		if raycast.is_colliding() and not raycast.get_collider().is_in_group("terrain"):
 			animp.play("hit")
 			var target = raycast.get_collider()
@@ -147,7 +169,7 @@ func _process(delta: float) -> void:
 			elif shape.name == "Body":
 				get_tree().call_group("rovers", "body_hit")
 	if not get_tree().paused:
-		$UI/timeremaining.text = str(int($survivetimer.time_left - 0.1) + 1)
+		$UI/timeremaining.text = str(int(survivetimer.time_left - 0.1) + 1)
 	else:
 		$UI/timeremaining.text = "0"
 	# movement
@@ -164,8 +186,8 @@ func _process(delta: float) -> void:
 		current_jumps = 0
 		velocity.x = 0.0
 		velocity.z = 0.0
-		velocity += strafe * global_transform.basis.x * speed
-		velocity += forward * global_transform.basis.z * speed
+		velocity += (strafe * global_transform.basis.x * speed) / scale.length()
+		velocity += (forward * global_transform.basis.z * speed) / scale.length()
 	if Input.is_action_just_pressed("Space") and current_jumps < max_jumps:
 		velocity.y = 3
 		current_jumps += 1
@@ -176,32 +198,44 @@ func death():
 	$rumble.stop()
 	$hit.play()
 	get_tree().paused = true
+	crosshair.hide()
+	$UI/teleportreloadUI.hide()
+	crosshair.hide()
 	dead = true
 	animp.play("death")
 	await get_tree().create_timer(0.5).timeout
 	$"peaceful residence".play()
 
 func disp_cards():
+	var indices: Array = []
 	for i in range(3):
 		var idx = randi_range(0, cardsbad.size() - 1)
+		while idx in indices:
+			idx = randi_range(0, cardsbad.size() - 1)
+		indices.append(idx)
 		await get_tree().create_timer(0.35).timeout
-		$UI/HBoxContainer.add_child(cardsbad[cardsbad.keys()[idx]].duplicate())
+		$UI/HBoxContainer.add_child(cardsbad[cardsbad.keys()[idx]].instantiate())
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	last_mouse_mode = Input.mouse_mode
 
 
 func disp_cards_good():
 	if run < randi_range(8 * playtime_multiplier, 16 * playtime_multiplier):
+		var indices: Array = []
 		for i in range(3):
 			var idx = randi_range(0, cards.size() - 1)
-			$UI/HBoxContainer.add_child(cards[cards.keys()[idx]].duplicate())
+			while idx in indices:
+				idx = randi_range(0, cards.size() - 1)
+			$UI/HBoxContainer.add_child(cards[cards.keys()[idx]].instantiate())
 			await get_tree().create_timer(0.35).timeout
 	else:
 		for i in range(2):
 			var idx = randi_range(0, cards.size() - 1)
-			$UI/HBoxContainer.add_child(cards[cards.keys()[idx]].duplicate())
+			$UI/HBoxContainer.add_child(cards[cards.keys()[idx]].instantiate())
 			await get_tree().create_timer(0.35).timeout
-		$UI/HBoxContainer.add_child(cardgood.duplicate())
+		$UI/HBoxContainer.add_child(cardgood.instantiate())
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	last_mouse_mode = Input.mouse_mode
 
 func clicked(cardname: String):
 	var parts = cardname.split("_")
@@ -215,23 +249,42 @@ func clicked(cardname: String):
 			invistime += 2.0
 		"life":
 			has_life_card = true
-			cards.erase("life_accuracy")
+			for key in cards.keys():
+				var part = key.split("_")[0]
+				if part == "life":
+					cards.erase(str(key))
 		"xray":
 			get_tree().call_group("rovers", "xray")
-			cards.erase("xray_speed")
+			for key in cards.keys():
+				var part = key.split("_")[0]
+				if part == "xray":
+					cards.erase(str(key))
 		"teleport":
-			$UI/crosshair.show()
+			crosshair.show()
 			$UI/teleportreloadUI.show()
 			has_teleport_card = true
-			cards.erase("teleport_reaction")
+			for key in cards.keys():
+				var part = key.split("_")[0]
+				if part == "teleport":
+					cards.erase(str(key))
 		"size":
 			scale *= 0.5
-			cards.erase("size_speed")
+			for key in cards.keys():
+				var part = key.split("_")[0]
+				if part == "size":
+					cards.erase(str(key))
 		"gun":
-			$Camera3D/GunHolder.show()
+			gunholder.show()
 			$Camera3D/GunHolder/gun/RayCast3D.enabled = true
-			$UI/crosshair.show()
+			crosshair.show()
 			has_gun_card = true
+		"time":
+			survivetimer.wait_time -= 5.0
+			if survivetimer.wait_time == 25.0:
+				for key in cards.keys():
+					var part = key.split("_")[0]
+					if part == "time":
+						cards.erase(str(key))
 		"bad":
 			print("bad luck")
 		_:
@@ -250,19 +303,25 @@ func respawn():
 	if has_life_card:
 		has_life = true
 	get_tree().paused = false
+	if has_gun_card:
+		crosshair.show()
+	if has_teleport_card:
+		$UI/teleportreloadUI.show()
+		crosshair.show()
 	if not has_gun_card:
-		$survivetimer.start()
+		survivetimer.start()
 	else:
 		$UI/timeremaining.text = "-1"
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	last_mouse_mode = Input.mouse_mode
 	animp.play("RESET")
-	dead = false
 	HP = 100.0
-	var vec2coords = Vector2(randf_range(-25, 25), randf_range(-25, 25))
+	dead = false
+	var vec2coords = Vector2(randf_range(-20, 20), randf_range(-20, 20))
 	var query = PhysicsRayQueryParameters3D.create(Vector3(vec2coords.x, 100, vec2coords.y), Vector3(vec2coords.x, -100, vec2coords.y))
 	var ray = get_world_3d().direct_space_state.intersect_ray(query)
 	while not ray and not ray["position"]:
-		vec2coords = Vector2(randf_range(-25, 25), randf_range(-25, 25))
+		vec2coords = Vector2(randf_range(-20, 20), randf_range(-20, 20))
 		query = PhysicsRayQueryParameters3D.create(Vector3(vec2coords.x, 100, vec2coords.y), Vector3(vec2coords.x, -100, vec2coords.y))
 		randomize()
 	global_position = ray["position"] + Vector3(0.0, 2.0, 0.0)
@@ -270,6 +329,9 @@ func respawn():
 func timeout():
 	$rumble.stop()
 	get_tree().paused = true
+	crosshair.hide()
+	$UI/teleportreloadUI.hide()
+	crosshair.hide()
 	animp.play("timeout")
 	await get_tree().create_timer(0.5).timeout
 	$"peaceful residence".play()
@@ -281,22 +343,17 @@ func _on_start_game_button_up() -> void:
 	get_tree().paused = false
 	start()
 
-
 func _on_master_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_linear(0, value)
-
+	AudioServer.set_bus_volume_linear(AudioServer.get_bus_index("Master"), value)
 
 func _on_sfx_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_linear(2, value)
-
+	AudioServer.set_bus_volume_linear(AudioServer.get_bus_index("sfx"), value)
 
 func _on_music_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_linear(1, value)
-
+	AudioServer.set_bus_volume_linear(AudioServer.get_bus_index("Music"), value)
 
 func _on_help_button_up() -> void:
 	$MainMenu/HelpLabel.visible = !$MainMenu/HelpLabel.visible
-
 
 func _on_invistime_timeout() -> void:
 	$inviscooldown.start()
@@ -309,15 +366,19 @@ func _on_inviscooldown_timeout() -> void:
 	await get_tree().create_timer(0.12).timeout
 	$invisready.play()
 
-func erase(key: String):
-	cardsbad.erase(str(key))
+func erase(name: String):
+	for key in cardsbad.keys():
+		var part = key.split("_")[1]
+		if part == str(name):
+			cards.erase(str(key))
 
 func win():
+	won = true
 	animp.stop()
 	animp.play("win")
-	$survivetimer.stop()
+	survivetimer.stop()
 	$"rumcherry(reprise)".play()
-	await get_tree().create_timer(7.0).timeout
+	await get_tree().create_timer(11.0).timeout
 	get_tree().paused = true
 
 
@@ -330,3 +391,7 @@ func _on_playtime_value_changed(value: float) -> void:
 
 func _on_chalksnap_finished() -> void:
 	$chalksnap.play()
+
+
+func _on_rumble_finished() -> void:
+	$rumble.play()

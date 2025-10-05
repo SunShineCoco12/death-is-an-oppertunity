@@ -15,6 +15,10 @@ run/main_scene="uid://dhjsxvxyodkcf"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[audio]
+
+buses/default_bus_layout=""
+
 [display]
 
 window/size/resizable=false
@@ -95,7 +99,9 @@ RMB={
 
 [rendering]
 
+occlusion_culling/bvh_build_quality=1
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 global_illumination/gi/use_half_resolution=true
 shading/overrides/force_vertex_shading=true
+occlusion_culling/occlusion_rays_per_thread=128

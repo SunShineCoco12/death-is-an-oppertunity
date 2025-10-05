@@ -8,9 +8,9 @@
 [ext_resource type="AudioStream" uid="uid://b633gkdslf2ms" path="res://assets/audio/chargeup.ogg" id="8_nvl01"]
 [ext_resource type="AudioStream" uid="uid://bq6bsln5ml3kt" path="res://assets/audio/invisrecharge.wav" id="9_ivps1"]
 [ext_resource type="AudioStream" uid="uid://dr40u72aq1bkr" path="res://assets/audio/life.wav" id="10_n7ghd"]
+[ext_resource type="AudioStream" uid="uid://cd8wm0xtbnx7h" path="res://assets/audio/rumble - ivory.ogg" id="11_606se"]
 [ext_resource type="AudioStream" uid="uid://clgna2v6kp04t" path="res://assets/audio/laserShoot.wav" id="11_nvl01"]
 [ext_resource type="AudioStream" uid="uid://tennudyillrh" path="res://assets/audio/rumcherry (reprise) - whitepine.ogg" id="12_606se"]
-[ext_resource type="AudioStream" uid="uid://bxy6unk1il4y6" path="res://assets/audio/rumble - ivory short.ogg" id="13_u1c27"]
 [ext_resource type="AudioStream" uid="uid://fj6aowgd7u05" path="res://assets/audio/peaceful residence - ivory.ogg" id="14_op7ga"]
 [ext_resource type="AudioStream" uid="uid://bjfn2icvadtlb" path="res://assets/audio/chalksnap - ivory.ogg" id="15_606se"]
 [ext_resource type="AudioStream" uid="uid://bqxqcslagyihl" path="res://assets/audio/lacebark pine - whitepine.ogg" id="15_q13i1"]
@@ -130,6 +130,7 @@ shadow_mesh = SubResource("ArrayMesh_3csyb")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bwjto"]
 resource_name = "blue"
 cull_mode = 2
+shading_mode = 2
 albedo_color = Color(1, 0, 0.60784316, 1)
 roughness = 0.5
 emission_enabled = true
@@ -446,7 +447,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_bwjto"]
 resource_name = "win"
-length = 7.0
+length = 11.0
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -455,7 +456,7 @@ tracks/0/path = NodePath("UI/Vignette:material:shader_parameter/alpha")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.5, 5),
+"times": PackedFloat32Array(4.5, 9),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.5, 1.0]
@@ -467,7 +468,7 @@ tracks/1/path = NodePath("UI/Vignette:material:shader_parameter/color")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.5, 4),
+"times": PackedFloat32Array(4.5, 8),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(0, 0, 0, 1), Color(0.15686275, 0.23529412, 0.15686275, 1)]
@@ -479,7 +480,7 @@ tracks/2/path = NodePath("UI/Vignette:material:shader_parameter/outer_radius")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.5, 5),
+"times": PackedFloat32Array(4.5, 9),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [1.0, 0.0]
@@ -491,7 +492,7 @@ tracks/3/path = NodePath("Win:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 1.9),
+"times": PackedFloat32Array(4, 5.9),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -503,7 +504,7 @@ tracks/4/path = NodePath("Win:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(4.5, 6),
+"times": PackedFloat32Array(8.5, 10),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
@@ -515,7 +516,7 @@ tracks/5/path = NodePath("rumcherry(reprise):playing")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(1.5),
+"times": PackedFloat32Array(5.5),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
@@ -527,7 +528,7 @@ tracks/6/path = NodePath("rumcherry(reprise):volume_db")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(1.5, 7),
+"times": PackedFloat32Array(5.5, 11),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [-80.0, -25.0]
@@ -539,7 +540,7 @@ tracks/7/path = NodePath("UI/crosshair:modulate")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
-"times": PackedFloat32Array(0, 3),
+"times": PackedFloat32Array(4, 7),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -551,7 +552,7 @@ tracks/8/path = NodePath("UI/teleportreloadUI:modulate")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
-"times": PackedFloat32Array(0, 3),
+"times": PackedFloat32Array(4, 7),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -563,7 +564,7 @@ tracks/9/path = NodePath("UI/hitmarker:modulate")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
-"times": PackedFloat32Array(0, 3),
+"times": PackedFloat32Array(4, 7),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 0, 0, 0.9019608), Color(1, 0, 0, 0)]
@@ -575,7 +576,7 @@ tracks/10/path = NodePath("UI/timeremaining:modulate")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
-"times": PackedFloat32Array(0, 3),
+"times": PackedFloat32Array(4, 7),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -587,7 +588,7 @@ tracks/11/path = NodePath(".:sfxbusaudio")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
-"times": PackedFloat32Array(0, 5),
+"times": PackedFloat32Array(4, 9),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [1.0, 0.0]
@@ -599,7 +600,7 @@ tracks/12/path = NodePath("chalksnap:volume_db")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
-"times": PackedFloat32Array(0, 4),
+"times": PackedFloat32Array(4, 8),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [-10.0, -80.0]
@@ -612,6 +613,45 @@ _data = {
 &"hit": SubResource("Animation_606se"),
 &"timeout": SubResource("Animation_sweqy"),
 &"win": SubResource("Animation_bwjto")
+}
+
+[sub_resource type="Animation" id="Animation_op7ga"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/GunHolder/gun/Cube_001:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D/GunHolder/gun/Cube_001:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -1, 0.25)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D/GunHolder/gun/Cube_001:surface_material_override/0:emission_energy_multiplier")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [16.0]
 }
 
 [sub_resource type="Animation" id="Animation_u1c27"]
@@ -653,45 +693,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, 16.0]
-}
-
-[sub_resource type="Animation" id="Animation_op7ga"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Camera3D/GunHolder/gun/Cube_001:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(1, 1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Camera3D/GunHolder/gun/Cube_001:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, -1, 0.25)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Camera3D/GunHolder/gun/Cube_001:surface_material_override/0:emission_energy_multiplier")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [16.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_q13i1"]
@@ -935,7 +936,6 @@ theme_override_font_sizes/font_size = 32
 text = "What is going on?"
 
 [node name="HelpLabel" type="Label" parent="MainMenu"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -943,10 +943,10 @@ anchor_bottom = 1.0
 offset_left = 403.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "You are trying to survive for 30 seconds while being hunted down by the Opportunity Mars rover.
+text = "You are trying to survive for 40 seconds while being hunted down by the Opportunity Mars rover.
 At the end of a run, you get to pick between 3 cards that decide what upgrades who gets.
 The red portion of the card is what the rover gets, the blue portion is what you get.
-Dying result in only the rover being upgraded.
+Dying results in only the rover being upgraded.
 Surviving results in both you and the rover being upgraded.
 After ~12 runs (default), a special upgrade becomes available that allows you to win the game."
 label_settings = SubResource("LabelSettings_sweqy")
@@ -979,11 +979,11 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -384.0
-offset_bottom = -216.0
+offset_right = -576.0
+offset_bottom = -324.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(1.5, 1.5)
+scale = Vector2(2, 2)
 theme_override_constants/separation = 160
 alignment = 1
 
@@ -1102,12 +1102,11 @@ horizontal_alignment = 1
 
 [node name="survivetimer" type="Timer" parent="."]
 process_mode = 1
-wait_time = 30.0
+wait_time = 40.0
 one_shot = true
 
 [node name="hit" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_hqtel")
-bus = &"SFX"
 
 [node name="inviscooldown" type="Timer" parent="."]
 wait_time = 5.0
@@ -1118,19 +1117,16 @@ one_shot = true
 
 [node name="invison" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_n7ghd")
-volume_db = 12.0
-bus = &"SFX"
+volume_db = 8.0
 
 [node name="invisoff" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_nvl01")
-volume_db = 12.0
-bus = &"SFX"
+volume_db = 8.0
 
 [node name="invisready" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("9_ivps1")
-volume_db = -10.0
+volume_db = -15.0
 max_polyphony = 2
-bus = &"SFX"
 
 [node name="shieldbreak" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_n7ghd")
@@ -1154,9 +1150,10 @@ bus = &"Music"
 parameters/looping = true
 
 [node name="rumble" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("13_u1c27")
+stream = ExtResource("11_606se")
 volume_db = -12.0
 bus = &"Music"
+parameters/looping = true
 
 [node name="peaceful residence" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("14_op7ga")
@@ -1173,13 +1170,16 @@ parameters/looping = true
 stream = ExtResource("16_u1c27")
 volume_db = -25.0
 max_polyphony = 20
-bus = &"SFX"
+bus = &"sfx"
 
 [node name="chalksnap" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("15_606se")
 volume_db = -10.0
 bus = &"Music"
 parameters/looping = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 324)
 
 [connection signal="button_up" from="MainMenu/Panel/MarginContainer/HBoxContainer/StartGame" to="." method="_on_start_game_button_up"]
 [connection signal="value_changed" from="MainMenu/Panel/MarginContainer/HBoxContainer/Sensitvity" to="." method="_on_sensitvity_value_changed"]
@@ -1191,4 +1191,5 @@ parameters/looping = true
 [connection signal="timeout" from="survivetimer" to="." method="timeout"]
 [connection signal="timeout" from="inviscooldown" to="." method="_on_inviscooldown_timeout"]
 [connection signal="timeout" from="invistime" to="." method="_on_invistime_timeout"]
+[connection signal="finished" from="rumble" to="." method="_on_rumble_finished"]
 [connection signal="finished" from="chalksnap" to="." method="_on_chalksnap_finished"]
